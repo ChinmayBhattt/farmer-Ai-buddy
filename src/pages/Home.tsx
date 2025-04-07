@@ -48,6 +48,10 @@ const Home: FC = () => {
     { icon: '👤', label: 'You', path: '/profile' }
   ];
 
+  const handleAddCrop = () => {
+    // Add crop functionality will be implemented later
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-50 pb-24">
       {/* Header with Animated Background */}
@@ -98,7 +102,10 @@ const Home: FC = () => {
             whileTap={{ scale: 0.95 }}
             className="flex-shrink-0"
           >
-            <button className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
+            <button 
+              onClick={handleAddCrop}
+              className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl shadow-sm hover:shadow-md transition-shadow duration-300"
+            >
               +
             </button>
           </motion.div>
@@ -168,8 +175,8 @@ const Home: FC = () => {
               </div>
             </motion.div>
           ))}
-          </div>
         </div>
+      </div>
 
       {/* Weather Card with Animation */}
       <motion.div
@@ -222,51 +229,6 @@ const Home: FC = () => {
             className="mt-4 w-full bg-gradient-to-r from-amber-400 to-amber-500 text-white rounded-xl py-3 font-medium shadow-sm hover:shadow-md transition-shadow duration-300"
           >
             <span className="mr-2">📍</span> Enable Location
-          </motion.button>
-        </motion.div>
-      </motion.div>
-
-      {/* Heal your crop section with Animation */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="p-4"
-      >
-        <motion.div 
-          whileHover={{ scale: 1.02 }}
-          className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
-        >
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="font-bold text-xl mb-6 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"
-          >
-            Heal your crop
-          </motion.h2>
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center space-x-4">
-              {['🌿', '📋', '💊'].map((icon, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
-                  whileHover={{ scale: 1.1 }}
-                  className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-xl shadow-sm"
-                >
-                  {icon}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          <motion.button 
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl py-4 font-medium shadow-sm hover:shadow-md transition-shadow duration-300"
-          >
-            Take a picture
           </motion.button>
         </motion.div>
       </motion.div>
