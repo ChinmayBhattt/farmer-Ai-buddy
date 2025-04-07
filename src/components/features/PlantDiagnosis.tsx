@@ -23,6 +23,7 @@ const PlantDiagnosis = () => {
     // TODO: Implement ML model integration
     // For now, we'll simulate a delay
     await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log("Analyzing file:", file.name, file.size);
     setIsAnalyzing(false);
   };
 
