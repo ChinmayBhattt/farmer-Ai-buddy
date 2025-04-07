@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    @apply text-gray-900 antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-plantix-primary text-white rounded-lg py-3 px-6 font-medium 
+           hover:bg-plantix-dark transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-plantix-primary text-plantix-primary rounded-lg py-2.5 px-6 font-medium
+           hover:bg-plantix-light transition-colors duration-200;
+  }
+  
+  .input-primary {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-200 
+           focus:outline-none focus:ring-2 focus:ring-plantix-primary;
+  }
+}
+
+/* Custom scrollbar for crop filters */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} 
