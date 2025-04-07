@@ -77,7 +77,6 @@ const Events: FC = () => {
 
   const handleCreateEvent = () => {
     const dateObj = new Date(`${newEvent.date}T${newEvent.time}`);
-    const now = new Date();
 
     const newEventObj: Event = {
       id: Date.now(),

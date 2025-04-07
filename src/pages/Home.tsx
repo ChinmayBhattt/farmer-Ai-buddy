@@ -1,6 +1,5 @@
 import type { FC } from 'react';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -50,10 +49,6 @@ const Home: FC = () => {
     { icon: '📅', label: 'Events', path: '/events' },
     { icon: '👤', label: 'You', path: '/profile' }
   ];
-
-  const handlePlusClick = () => {
-    setIsOptionsOpen(!isOptionsOpen);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-50 pb-24">
