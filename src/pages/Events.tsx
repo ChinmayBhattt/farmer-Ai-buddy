@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CalendarIcon, ClockIcon, UserGroupIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -13,11 +13,55 @@ interface Event {
   status: 'upcoming' | 'ended';
   endDate?: string;
   participants?: number;
+  createdByMe?: boolean;
+  description?: string;
 }
 
 const Events: FC = () => {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past' | 'my'>('upcoming');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [events, setEvents] = useState<Event[]>(() => {
+    const savedEvents = localStorage.getItem('events');
+    if (savedEvents) {
+      return JSON.parse(savedEvents);
+    }
+    return [
+      {
+        id: 445,
+        title: 'Weekly Contest 445',
+        date: 'Apr 6, 2025',
+        time: '8:00 AM GMT+5:30',
+        isVirtual: true,
+        image: '/event-bg-1.svg',
+        status: 'upcoming',
+        participants: 1234,
+        createdByMe: false
+      },
+      {
+        id: 444,
+        title: 'Weekly Contest 444',
+        date: 'Mar 30, 2025',
+        time: '8:00 AM GMT+5:30',
+        isVirtual: true,
+        image: '/event-bg-1.svg',
+        status: 'upcoming',
+        participants: 987,
+        createdByMe: false
+      },
+      {
+        id: 443,
+        title: 'Biweekly Contest 153',
+        date: 'Mar 29, 2025',
+        time: '8:00 PM GMT+5:30',
+        isVirtual: true,
+        image: '/event-bg-2.svg',
+        status: 'upcoming',
+        participants: 756,
+        createdByMe: false
+      }
+    ];
+  });
+
   const [newEvent, setNewEvent] = useState({
     title: '',
     date: '',
@@ -25,84 +69,18 @@ const Events: FC = () => {
     description: '',
     bannerColor: 'blue'
   });
-  const [events] = useState<Event[]>([
-    {
-      id: 445,
-      title: 'Weekly Contest 445',
-      date: 'Apr 6, 2025',
-      time: '8:00 AM GMT+5:30',
-      isVirtual: true,
-      image: '/event-bg-1.svg',
-      status: 'upcoming',
-      participants: 1234
-    },
-    {
-      id: 444,
-      title: 'Weekly Contest 444',
-      date: 'Mar 30, 2025',
-      time: '8:00 AM GMT+5:30',
-      isVirtual: true,
-      image: '/event-bg-1.svg',
-      status: 'upcoming',
-      participants: 987
-    },
-    {
-      id: 443,
-      title: 'Biweekly Contest 153',
-      date: 'Mar 29, 2025',
-      time: '8:00 PM GMT+5:30',
-      isVirtual: true,
-      image: '/event-bg-2.svg',
-      status: 'upcoming',
-      participants: 756
-    },
-    {
-      id: 291,
-      title: 'Weekly Contest 291',
-      date: 'May 1, 2022',
-      time: '8:00 AM GMT+5:30',
-      status: 'ended',
-      endDate: 'May 1, 2022',
-      image: '/featured-1.jpg',
-      participants: 2341
-    },
-    {
-      id: 290,
-      title: 'Weekly Contest 290',
-      date: 'Apr 24, 2022',
-      time: '8:00 AM GMT+5:30',
-      status: 'ended',
-      endDate: 'Apr 24, 2022',
-      image: '/featured-2.jpg',
-      participants: 1876
-    }
-  ]);
 
-  const [rankings] = useState([
-    { rank: 1, name: 'Miruu', rating: 3703, attended: 26, avatar: '👾' },
-    { rank: 2, name: 'Neal Wu 🇺🇸', rating: 3686, attended: 51, avatar: '👤' },
-    { rank: 3, name: 'Yawn_Sean 🌙', rating: 3645, attended: 84, avatar: '👤' },
-    { rank: 4, name: '小羊肖恩 🇨🇳', rating: 3611, attended: 107, avatar: '👤' },
-    { rank: 5, name: 'Heltion 何遥 🇨🇳', rating: 3599, attended: 146, avatar: '👤' }
-  ]);
+  // Save events to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('events', JSON.stringify(events));
+  }, [events]);
 
   const handleCreateEvent = () => {
-    const gradients = {
-      blue: 'linear-gradient(to right bottom, rgb(30, 64, 175), rgb(56, 189, 248))',
-      green: 'linear-gradient(to right bottom, rgb(6, 95, 70), rgb(4, 120, 87))',
-      purple: 'linear-gradient(to right bottom, rgb(107, 33, 168), rgb(147, 51, 234))',
-      orange: 'linear-gradient(to right bottom, rgb(194, 65, 12), rgb(234, 88, 12))'
-    };
-
     const dateObj = new Date(`${newEvent.date}T${newEvent.time}`);
     const now = new Date();
-    const diff = dateObj.getTime() - now.getTime();
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-    const newEventObj = {
-      id: events.length + 445,
+    const newEventObj: Event = {
+      id: Date.now(),
       title: newEvent.title,
       date: dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       time: dateObj.toLocaleTimeString('en-US', { 
@@ -113,7 +91,9 @@ const Events: FC = () => {
       isVirtual: true,
       image: '/event-bg-1.svg',
       status: 'upcoming',
-      participants: 0
+      participants: 0,
+      createdByMe: true,
+      description: newEvent.description
     };
 
     setEvents(prev => [...prev, newEventObj]);
@@ -125,7 +105,18 @@ const Events: FC = () => {
       description: '',
       bannerColor: 'blue'
     });
+    
+    // Switch to My Events tab after creating
+    setActiveTab('my');
   };
+
+  const [rankings] = useState([
+    { rank: 1, name: 'Miruu', rating: 3703, attended: 26, avatar: '👾' },
+    { rank: 2, name: 'Neal Wu 🇺🇸', rating: 3686, attended: 51, avatar: '👤' },
+    { rank: 3, name: 'Yawn_Sean 🌙', rating: 3645, attended: 84, avatar: '👤' },
+    { rank: 4, name: '小羊肖恩 🇨🇳', rating: 3611, attended: 107, avatar: '👤' },
+    { rank: 5, name: 'Heltion 何遥 🇨🇳', rating: 3599, attended: 146, avatar: '👤' }
+  ]);
 
   const navigationItems = [
     { icon: '🏠', label: 'Your crops', path: '/' },
@@ -309,8 +300,9 @@ const Events: FC = () => {
         <div className="grid grid-cols-1 gap-4 mb-6">
           {events
             .filter(event => 
-              (activeTab === 'upcoming' && event.status === 'upcoming') ||
-              (activeTab === 'past' && event.status === 'ended')
+              (activeTab === 'upcoming' && event.status === 'upcoming' && !event.createdByMe) ||
+              (activeTab === 'past' && event.status === 'ended') ||
+              (activeTab === 'my' && event.createdByMe)
             )
             .map((event) => (
               <motion.div
@@ -339,12 +331,22 @@ const Events: FC = () => {
                             {event.participants}
                           </div>
                         </div>
+                        {event.description && (
+                          <p className="text-sm text-gray-400 mt-2">{event.description}</p>
+                        )}
                       </div>
-                      {event.isVirtual && (
-                        <span className="px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded-full">
-                          Virtual
-                        </span>
-                      )}
+                      <div className="flex items-center space-x-2">
+                        {event.isVirtual && (
+                          <span className="px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded-full">
+                            Virtual
+                          </span>
+                        )}
+                        {event.createdByMe && (
+                          <span className="px-2 py-1 text-xs bg-green-500/20 text-green-300 rounded-full">
+                            Created by me
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
