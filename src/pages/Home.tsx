@@ -41,8 +41,6 @@ const Home: FC = () => {
     { id: 4, name: 'Pests and Disease Alert', icon: '⚠️', path: '/alerts', color: 'bg-orange-50' },
   ];
 
-  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-
   const navigationItems = [
     { icon: '🏠', label: 'Your crops', path: '/' },
     { icon: '👥', label: 'Community', path: '/community' },
