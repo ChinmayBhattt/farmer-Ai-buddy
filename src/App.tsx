@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FC } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BottomNavigation from './components/layout/BottomNavigation';
 import Home from './pages/Home';
@@ -7,7 +7,7 @@ import Dukaan from './pages/Dukaan';
 import Profile from './pages/Profile';
 import PlantDiagnosis from './components/features/PlantDiagnosis';
 
-function App() {
+const App: FC = () => {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
@@ -22,6 +22,6 @@ function App() {
       </div>
     </Router>
   );
-}
+};
 
 export default App; 

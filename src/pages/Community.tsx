@@ -1,7 +1,7 @@
-import React from 'react';
+import type { FC } from 'react';
 import { MagnifyingGlassIcon, BellIcon } from '@heroicons/react/24/outline';
 
-const Community = () => {
+const Community: FC = () => {
   const cropFilters = [
     { name: 'Cabbage', icon: '🥬' },
     { name: 'Bean', icon: '🫘' },

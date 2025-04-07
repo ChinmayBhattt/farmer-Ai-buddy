@@ -14,13 +14,18 @@ interface AppContextType {
   requestLocationPermission: () => Promise<void>;
 }
 
+interface LocationState {
+  latitude: number | null;
+  longitude: number | null;
+}
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [language, setLanguage] = useState('en');
-  const [location, setLocation] = useState({
+  const [location, setLocation] = useState<LocationState>({
     latitude: null,
     longitude: null,
   });

@@ -1,7 +1,7 @@
-import React from 'react';
+import type { FC } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
-const Home = () => {
+const Home: FC = () => {
   const crops = [
     { id: 1, name: 'Nuts', icon: '🥜' },
     { id: 2, name: 'Apple', icon: '🍎' },

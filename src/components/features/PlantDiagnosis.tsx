@@ -7,14 +7,14 @@ const PlantDiagnosis = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result as string);
-        analyzePlant(file);
+        analyzePlant(selectedFile);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(selectedFile);
     }
   };
 

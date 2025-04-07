@@ -1,6 +1,6 @@
-import React from 'react';
+import type { FC } from 'react';
 
-const Profile = () => {
+const Profile: FC = () => {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* Account Section */}

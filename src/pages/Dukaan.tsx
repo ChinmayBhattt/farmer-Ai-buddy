@@ -1,7 +1,7 @@
-import React from 'react';
+import type { FC } from 'react';
 import { MapPinIcon } from '@heroicons/react/24/outline';
 
-const Dukaan = () => {
+const Dukaan: FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4 text-center">
       <div className="max-w-sm">
