@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   HomeIcon,
   ChatBubbleLeftRightIcon,
-  ShoppingBagIcon,
+  CalendarIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
 
@@ -21,9 +21,9 @@ const BottomNavigation = () => {
       path: '/community',
     },
     {
-      name: 'Dukaan',
-      icon: ShoppingBagIcon,
-      path: '/dukaan',
+      name: 'Events',
+      icon: CalendarIcon,
+      path: '/events',
     },
     {
       name: 'You',

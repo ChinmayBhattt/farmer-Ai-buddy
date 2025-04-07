@@ -4,7 +4,6 @@ import BottomNavigation from './components/layout/BottomNavigation';
 import Home from './pages/Home';
 import Events from './pages/Events';
 import Community from './pages/Community';
-import Dukaan from './pages/Dukaan';
 import Profile from './pages/Profile';
 import PlantDiagnosis from './components/features/PlantDiagnosis';
 
@@ -16,7 +15,6 @@ const App: FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<Events />} />
           <Route path="/community" element={<Community />} />
-          <Route path="/dukaan" element={<Dukaan />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/diagnosis" element={<PlantDiagnosis />} />
         </Routes>
