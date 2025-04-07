@@ -45,10 +45,10 @@ const Home: FC = () => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
   const navigationItems = [
-    { icon: '🏠', label: 'Home', path: '/' },
+    { icon: '🏠', label: 'Your crops', path: '/' },
     { icon: '👥', label: 'Community', path: '/community' },
     { icon: '📅', label: 'Events', path: '/events' },
-    { icon: '👤', label: 'Profile', path: '/profile' }
+    { icon: '👤', label: 'You', path: '/profile' }
   ];
 
   const handlePlusClick = () => {

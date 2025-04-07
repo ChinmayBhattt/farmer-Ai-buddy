@@ -128,7 +128,7 @@ const Events: FC = () => {
   };
 
   const navigationItems = [
-    { icon: '🌱', label: 'Your crops', path: '/' },
+    { icon: '🏠', label: 'Your crops', path: '/' },
     { icon: '👥', label: 'Community', path: '/community' },
     { icon: '📅', label: 'Events', path: '/events' },
     { icon: '👤', label: 'You', path: '/profile' }
@@ -393,8 +393,8 @@ const Events: FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-        className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 flex justify-between px-6 py-3 shadow-lg"
+        transition={{ duration: 0.5 }}
+        className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 flex justify-between items-center px-6 py-3"
       >
         {navigationItems.map((item, index) => (
           <Link
