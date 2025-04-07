@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BottomNavigation from './components/layout/BottomNavigation';
 import Home from './pages/Home';
+import Events from './pages/Events';
 import Community from './pages/Community';
 import Dukaan from './pages/Dukaan';
 import Profile from './pages/Profile';
@@ -13,6 +14,7 @@ const App: FC = () => {
       <div className="min-h-screen bg-gray-50">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/community" element={<Community />} />
           <Route path="/dukaan" element={<Dukaan />} />
           <Route path="/profile" element={<Profile />} />
