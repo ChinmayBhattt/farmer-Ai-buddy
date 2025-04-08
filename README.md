@@ -1,88 +1,49 @@
-# Plantix Clone
+# 🚜 Smart Farmer Buddy - AI Powered Farming Assistant
 
-A clone of the Plantix app (https://plantix.net/en/) built with React, TypeScript, and Tailwind CSS.
+**Smart Farmer Buddy** is an AI-powered full-stack web application designed to assist Indian farmers with real-time agricultural advice. It provides personalized recommendations using AI and IoT technologies and works even in low-connectivity areas with offline support and multilingual voice commands.
 
-## Features
+> 🏆 Built for a Hackathon | Solving Real-world Farming Challenges
 
-- 📸 Plant Disease Diagnosis with ML
-- 🌱 Crop Management & Advice
-- 🌤️ Weather Forecasts
-- 💰 Market Price Updates
-- 👥 Farmer Community
-- 📱 Mobile-First Design
-- 🌍 Multilingual Support
+---
 
-## Tech Stack
+## 🌾 Features
 
-- Frontend: React.js + TypeScript
-- Styling: Tailwind CSS
-- Routing: React Router
-- State Management: React Context + Hooks
-- Backend: Firebase (Auth, Firestore, Storage)
-- ML: TensorFlow.js
-- Internationalization: i18next
-- Offline Support: IndexedDB
+- 🌦️ **Real-time Weather Forecasting**
+- 🧪 **Soil and Pest Analysis via AI/ML**
+- 📸 **Image-based Crop Disease Detection**
+- 🛍️ **Nearby Farm Product Store (Location-based)**
+- 📉 **Live Market Price Tracking**
+- 🌐 **Multilingual Voice Assistant & Chatbot**
+- 🧠 **Offline AI Support with Ollama**
+- 🌱 **Generative AI for Crop Growth Insights**
+- 👨‍🌾 **Farmer-Student Community Forum**
 
-## Getting Started
+---
 
-1. Clone the repository:
+## 🛠 Tech Stack
+
+**Frontend:**  
+- React.js  
+- Tailwind CSS  
+- Framer Motion  
+
+**Backend & Services:**  
+- Firebase (Authentication, Firestore, Hosting)  
+- TensorFlow / ML Kit (Image Analysis)  
+- Ollama (Offline AI Support)  
+- Arduino (IoT Integration)  
+
+---
+
+## 📦 Installation & Setup
+
 ```bash
-git clone https://github.com/yourusername/plantix-clone.git
-cd plantix-clone
-```
+# Clone the repo
+git clone https://github.com/ChinmayBhattt/farmer-Ai-buddy.git
+cd farmer-Ai-buddy
 
-2. Install dependencies:
-```bash
+# Install dependencies
 npm install
-```
 
-3. Create a `.env` file in the root directory with your Firebase configuration:
-```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-```
-
-4. Start the development server:
-```bash
+# Start the development server
 npm run dev
-```
-
-5. Open http://localhost:5173 in your browser
-
-## Project Structure
-
-```
-src/
-├── components/         # Reusable UI components
-│   ├── features/      # Feature-specific components
-│   └── layout/        # Layout components
-├── config/            # Configuration files
-├── context/          # React Context providers
-├── hooks/            # Custom React hooks
-├── pages/            # Page components
-├── services/         # API and service integrations
-├── styles/           # Global styles and Tailwind config
-└── utils/            # Utility functions
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Original Plantix app by PEAT Digital GmbH
-- Icons from Heroicons
-- UI components from Headless UI 
