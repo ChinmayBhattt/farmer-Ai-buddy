@@ -105,18 +105,23 @@ const Home: FC = () => {
     try {
       setSearchLoading(true);
       const response = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${query},IN&limit=5&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
       );
       const data = await response.json();
-      setSearchResults(data.map((item: any) => ({
-        name: item.name + (item.state ? `, ${item.state}` : ''),
-        lat: item.lat,
-        lon: item.lon
-      })));
+      if (Array.isArray(data)) {
+        setSearchResults(data.map((item: any) => ({
+          name: item.state ? `${item.name}, ${item.state}, ${item.country}` : `${item.name}, ${item.country}`,
+          lat: item.lat,
+          lon: item.lon
+        })));
+      } else {
+        setSearchResults([]);
+      }
       setSearchLoading(false);
     } catch (error) {
       console.error('Error searching locations:', error);
       setSearchLoading(false);
+      setSearchResults([]);
     }
   };
 
@@ -269,8 +274,9 @@ const Home: FC = () => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search for a city in India..."
+                    placeholder="Search for a city..."
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    autoFocus
                   />
                   {searchLoading && (
                     <div className="absolute right-3 top-2.5">
@@ -279,7 +285,7 @@ const Home: FC = () => {
                   )}
                 </div>
                 {searchResults.length > 0 && (
-                  <div className="mt-2 bg-white rounded-lg border border-gray-200 shadow-lg">
+                  <div className="mt-2 bg-white rounded-lg border border-gray-200 shadow-lg max-h-60 overflow-y-auto">
                     {searchResults.map((result, index) => (
                       <button
                         key={index}
@@ -290,7 +296,7 @@ const Home: FC = () => {
                           setSearchQuery('');
                           setSearchResults([]);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg border-b last:border-b-0 border-gray-100"
+                        className="w-full px-4 py-3 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg border-b last:border-b-0 border-gray-100 transition-colors duration-200"
                       >
                         {result.name}
                       </button>
