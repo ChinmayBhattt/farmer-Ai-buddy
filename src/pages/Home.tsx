@@ -54,6 +54,7 @@ const Home: FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<LocationData[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [permissionDenied, setPermissionDenied] = useState(false);
 
   const navigate = useNavigate();
 
@@ -117,32 +118,23 @@ const Home: FC = () => {
     }
   };
 
-  useEffect(() => {
-    // Get user's location and fetch weather
-    const getLocationAndWeather = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setLocation({ lat: latitude, lon: longitude });
-            fetchWeather(latitude, longitude);
-          },
-          (error) => {
-            console.error('Error getting location:', error);
-            // Default to a location (e.g., Mumbai)
-            fetchWeather(19.0760, 72.8777);
-            setLoading(false);
-          }
-        );
-      } else {
-        // Default to a location if geolocation is not supported
-        fetchWeather(19.0760, 72.8777);
-        setLoading(false);
-      }
-    };
-
-    getLocationAndWeather();
-  }, []);
+  const enableLiveLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ lat: latitude, lon: longitude });
+          fetchWeather(latitude, longitude);
+          setPermissionDenied(false);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          setPermissionDenied(true);
+          setLocation(null);
+        }
+      );
+    }
+  };
 
   // Add debounce effect for search
   useEffect(() => {
@@ -278,14 +270,21 @@ const Home: FC = () => {
           whileHover={{ scale: 1.01 }}
           className="bg-white rounded-2xl border border-gray-200 overflow-hidden"
         >
-          {loading ? (
-            <div className="flex items-center justify-center h-32">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            </div>
-          ) : weather ? (
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-semibold text-gray-800">Weather</h2>
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-lg font-semibold text-gray-800">Weather</h2>
+              {!location && !permissionDenied && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={enableLiveLocation}
+                  className="text-blue-500 flex items-center space-x-1 text-sm"
+                >
+                  <span>📍</span>
+                  <span>Enable Location</span>
+                </motion.button>
+              )}
+              {location && (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -295,52 +294,58 @@ const Home: FC = () => {
                   <span>📍</span>
                   <span>Change Location</span>
                 </motion.button>
-              </div>
+              )}
+            </div>
 
-              {showLocationSearch && (
-                <div className="mb-4">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search for a city in India..."
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    {searchLoading && (
-                      <div className="absolute right-3 top-2.5">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
-                      </div>
-                    )}
-                  </div>
-                  {searchResults.length > 0 && (
-                    <div className="mt-2 bg-white rounded-lg border border-gray-200 shadow-lg">
-                      {searchResults.map((result, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            fetchWeather(result.lat, result.lon);
-                            setShowLocationSearch(false);
-                            setSearchQuery('');
-                            setSearchResults([]);
-                          }}
-                          className="w-full px-4 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg border-b last:border-b-0 border-gray-100"
-                        >
-                          {result.name}
-                        </button>
-                      ))}
+            {showLocationSearch && location && (
+              <div className="mb-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search for a city in India..."
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  {searchLoading && (
+                    <div className="absolute right-3 top-2.5">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
                     </div>
                   )}
                 </div>
-              )}
+                {searchResults.length > 0 && (
+                  <div className="mt-2 bg-white rounded-lg border border-gray-200 shadow-lg">
+                    {searchResults.map((result, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          fetchWeather(result.lat, result.lon);
+                          setShowLocationSearch(false);
+                          setSearchQuery('');
+                          setSearchResults([]);
+                        }}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg border-b last:border-b-0 border-gray-100"
+                      >
+                        {result.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
+            {loading ? (
+              <div className="flex items-center justify-center h-32">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+              </div>
+            ) : weather && location ? (
               <div className="flex items-start justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-gray-800">
                     Today, {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
                   </h2>
                   <div className="mt-1 text-gray-600">
-                    Clear • {Math.round(weather.main.temp)}°C / {Math.round(weather.main.temp_min)}°C
+                    {weather.weather[0].main} • {Math.round(weather.main.temp)}°C / {Math.round(weather.main.temp_min)}°C
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -354,37 +359,17 @@ const Home: FC = () => {
                   </span>
                 </div>
               </div>
-              
-              {!location && (
-                <div className="mt-4 bg-yellow-50 rounded-xl p-3 flex items-center">
-                  <span className="text-lg mr-2">📍</span>
-                  <div className="flex-1">
-                    <button
-                      onClick={() => {
-                        if (navigator.geolocation) {
-                          navigator.geolocation.getCurrentPosition(
-                            (position) => {
-                              const { latitude, longitude } = position.coords;
-                              setLocation({ lat: latitude, lon: longitude });
-                              fetchWeather(latitude, longitude);
-                            }
-                          );
-                        }
-                      }}
-                      className="text-left w-full"
-                    >
-                      <div className="text-gray-700">Location permission required</div>
-                      <div className="text-blue-600 font-medium">Allow</div>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="text-center text-gray-500 p-4">
-              Unable to fetch weather data
-            </div>
-          )}
+            ) : (
+              <div className="flex flex-col items-center justify-center h-32 text-gray-500">
+                <span className="text-4xl mb-2">🌤️</span>
+                <p className="text-center">
+                  {permissionDenied 
+                    ? "Location access denied. Enable location to see weather." 
+                    : "Enable location to see weather updates"}
+                </p>
+              </div>
+            )}
+          </div>
         </motion.div>
       </div>
 
