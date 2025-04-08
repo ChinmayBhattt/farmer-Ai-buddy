@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ChatBot from '../components/ChatBot';
 
 interface WeatherData {
   main: {
@@ -59,6 +60,7 @@ const Home: FC = () => {
     condition: 'Sunny',
     location: 'Mumbai, India'
   });
+  const [showChat, setShowChat] = useState(false);
 
   const crops = [
     { id: 1, name: 'Nuts', icon: '🥜', color: 'bg-purple-100' },
@@ -133,6 +135,12 @@ const Home: FC = () => {
 
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
+
+  useEffect(() => {
+    const handleCloseChatBot = () => setShowChat(false);
+    document.addEventListener('closeChatBot', handleCloseChatBot);
+    return () => document.removeEventListener('closeChatBot', handleCloseChatBot);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -433,6 +441,39 @@ const Home: FC = () => {
           ))}
         </div>
       </motion.div>
+
+      {/* Chat Button */}
+      <motion.button
+        whileHover={{ scale: 1.1, y: -2 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setShowChat(!showChat)}
+        className="fixed bottom-20 right-4 sm:right-6 flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+      >
+        <motion.div
+          animate={{ 
+            scale: showChat ? 1 : [1, 1.2, 1],
+            rotate: showChat ? 0 : [0, -10, 10, -10, 0]
+          }}
+          transition={{ 
+            duration: showChat ? 0.2 : 2,
+            repeat: showChat ? 0 : Infinity,
+            repeatDelay: 3
+          }}
+          className="relative"
+        >
+          {showChat ? (
+            <span className="text-xl">×</span>
+          ) : (
+            <>
+              <span className="text-xl">💬</span>
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full border-2 border-white"></span>
+            </>
+          )}
+        </motion.div>
+      </motion.button>
+
+      {/* Chat Bot */}
+      {showChat && <ChatBot />}
 
       {/* Bottom Navigation */}
       <motion.div
