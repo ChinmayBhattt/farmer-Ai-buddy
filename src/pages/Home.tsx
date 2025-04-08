@@ -54,7 +54,6 @@ const Home: FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<LocationData[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [_permissionDenied, setPermissionDenied] = useState(false);
   const [defaultWeather] = useState({
     temp: 28,
     condition: 'Sunny',
