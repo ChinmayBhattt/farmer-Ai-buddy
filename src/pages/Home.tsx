@@ -48,13 +48,18 @@ const Home: FC = () => {
   ]);
 
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [location, setLocation] = useState<{lat: number; lon: number} | null>(null);
   const [showLocationSearch, setShowLocationSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<LocationData[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
+  const [defaultWeather] = useState({
+    temp: 28,
+    condition: 'Sunny',
+    location: 'Mumbai, India'
+  });
 
   const navigate = useNavigate();
 
@@ -202,7 +207,7 @@ const Home: FC = () => {
         </motion.div>
       </motion.div>
 
-      {/* Events Panel */}
+      {/* Events Panel - Optimized */}
       <div className="px-4 mb-4">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-semibold">Upcoming Events</h2>
@@ -215,14 +220,12 @@ const Home: FC = () => {
         </div>
         <div className="flex space-x-4 overflow-x-auto">
           {events.map((event, index) => (
-            <motion.div
+            <div
               key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ scale: 1.02 }}
-              onClick={() => navigate('/events')}
-              className="flex-shrink-0 w-[320px]"
+              className="flex-shrink-0 w-[320px] animate-fadeIn"
+              style={{
+                animationDelay: `${index * 200}ms`
+              }}
             >
               <div 
                 className="rounded-2xl h-[180px] relative overflow-hidden"
@@ -242,15 +245,11 @@ const Home: FC = () => {
                 </div>
                 <div className="absolute inset-0 p-6 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center space-x-2 text-sm text-white/80">
-                      <motion.div
-                        animate={{ opacity: [1, 0.7, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="flex items-center"
-                      >
+                    <div className="text-sm text-white/80">
+                      <div className="flex items-center">
                         <span className="mr-2">⏳</span>
                         <span>Starts in {event.startsIn}</span>
-                      </motion.div>
+                      </div>
                     </div>
                     <h3 className="text-xl font-bold text-white mt-3">{event.title}</h3>
                   </div>
@@ -259,7 +258,7 @@ const Home: FC = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -273,31 +272,18 @@ const Home: FC = () => {
           <div className="p-4">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-semibold text-gray-800">Weather</h2>
-              {!location && !permissionDenied && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={enableLiveLocation}
-                  className="text-blue-500 flex items-center space-x-1 text-sm"
-                >
-                  <span>📍</span>
-                  <span>Enable Location</span>
-                </motion.button>
-              )}
-              {location && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowLocationSearch(!showLocationSearch)}
-                  className="text-blue-500 flex items-center space-x-1 text-sm"
-                >
-                  <span>📍</span>
-                  <span>Change Location</span>
-                </motion.button>
-              )}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowLocationSearch(!showLocationSearch)}
+                className="text-blue-500 flex items-center space-x-1 text-sm"
+              >
+                <span>📍</span>
+                <span>Change Location</span>
+              </motion.button>
             </div>
 
-            {showLocationSearch && location && (
+            {showLocationSearch && (
               <div className="mb-4">
                 <div className="relative">
                   <input
@@ -320,6 +306,7 @@ const Home: FC = () => {
                         key={index}
                         onClick={() => {
                           fetchWeather(result.lat, result.lon);
+                          setLocation({ lat: result.lat, lon: result.lon });
                           setShowLocationSearch(false);
                           setSearchQuery('');
                           setSearchResults([]);
@@ -360,13 +347,23 @@ const Home: FC = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-32 text-gray-500">
-                <span className="text-4xl mb-2">🌤️</span>
-                <p className="text-center">
-                  {permissionDenied 
-                    ? "Location access denied. Enable location to see weather." 
-                    : "Enable location to see weather updates"}
-                </p>
+              <div className="flex items-start justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Today, {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
+                  </h2>
+                  <div className="mt-1 text-gray-600">
+                    {defaultWeather.condition} • {defaultWeather.location}
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="text-4xl font-semibold">
+                    {defaultWeather.temp}°C
+                  </div>
+                  <span className="ml-2 text-4xl">
+                    ☀️
+                  </span>
+                </div>
               </div>
             )}
           </div>
