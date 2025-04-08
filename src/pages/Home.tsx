@@ -54,6 +54,7 @@ const Home: FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<LocationData[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [defaultWeather] = useState({
     temp: 28,
@@ -61,6 +62,7 @@ const Home: FC = () => {
     location: 'Mumbai, India'
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate();
 
   const crops = [
@@ -123,6 +125,7 @@ const Home: FC = () => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const enableLiveLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -260,8 +263,8 @@ const Home: FC = () => {
               </div>
             </div>
           ))}
+          </div>
         </div>
-      </div>
 
       {/* Weather Card */}
       <div className="px-4 mb-4">
