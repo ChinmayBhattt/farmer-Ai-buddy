@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface WeatherData {
   main: {
@@ -54,16 +54,12 @@ const Home: FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<LocationData[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [permissionDenied, setPermissionDenied] = useState(false);
+  const [_permissionDenied, setPermissionDenied] = useState(false);
   const [defaultWeather] = useState({
     temp: 28,
     condition: 'Sunny',
     location: 'Mumbai, India'
   });
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const navigate = useNavigate();
 
   const crops = [
     { id: 1, name: 'Nuts', icon: '🥜', color: 'bg-purple-100' },
@@ -122,25 +118,6 @@ const Home: FC = () => {
     } catch (error) {
       console.error('Error searching locations:', error);
       setSearchLoading(false);
-    }
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const enableLiveLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ lat: latitude, lon: longitude });
-          fetchWeather(latitude, longitude);
-          setPermissionDenied(false);
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          setPermissionDenied(true);
-          setLocation(null);
-        }
-      );
     }
   };
 
