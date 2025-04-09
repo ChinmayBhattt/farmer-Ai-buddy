@@ -1,6 +1,7 @@
-# Plantix Clone
+# FarmAi
 
-A clone of the Plantix app (https://plantix.net/en/) built with React, TypeScript, and Tailwind CSS.
+Empowering Farmers with Real-Time AI Support, Voice Assistant & Offline Capability
+(https://plantix.net/en/) built with React, TypeScript, and Tailwind CSS.
 
 ## Features
 
