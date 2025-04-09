@@ -1,7 +1,7 @@
 # FarmAi
 
 Empowering Farmers with Real-Time AI Support, Voice Assistant & Offline Capability
-(https://github.com/ChinmayBhattt/farmer-Ai-buddy.git) built with React, TypeScript, and Tailwind CSS.
+(https://farmer-ai-buddy.vercel.app/) built with React, TypeScript, and Tailwind CSS.
 
 ## Features
 
