@@ -85,4 +85,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Original Plantix app by PEAT Digital GmbH
 - Icons from Heroicons
-- UI components from Headless UI 
+- UI components from Headless UI
