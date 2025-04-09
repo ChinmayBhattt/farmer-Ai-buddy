@@ -1,7 +1,7 @@
 # FarmAi
 
 Empowering Farmers with Real-Time AI Support, Voice Assistant & Offline Capability
-(https://plantix.net/en/) built with React, TypeScript, and Tailwind CSS.
+(https://github.com/ChinmayBhattt/farmer-Ai-buddy.git) built with React, TypeScript, and Tailwind CSS.
 
 ## Features
 
@@ -28,7 +28,7 @@ Empowering Farmers with Real-Time AI Support, Voice Assistant & Offline Capabili
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/plantix-clone.git
+git clone https://github.com/yourusername/plantix-clone.git (https://github.com/ChinmayBhattt/farmer-Ai-buddy.git)
 cd plantix-clone
 ```
 
