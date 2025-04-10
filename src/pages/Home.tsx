@@ -60,6 +60,9 @@ const allCrops = [
       { id: 4, name: 'Grapes', icon: '🍇', color: 'bg-purple-100' },
       { id: 5, name: 'Watermelon', icon: '🍉', color: 'bg-red-100' },
       { id: 6, name: 'Mango', icon: '🥭', color: 'bg-yellow-100' },
+      { id: 31, name: 'Pineapple', icon: '🍍', color: 'bg-yellow-100' },
+      { id: 32, name: 'Strawberry', icon: '🍓', color: 'bg-red-100' },
+      { id: 33, name: 'Peach', icon: '🍑', color: 'bg-orange-100' }
     ]
   },
   {
@@ -71,6 +74,9 @@ const allCrops = [
       { id: 10, name: 'Tomato', icon: '🍅', color: 'bg-red-100' },
       { id: 11, name: 'Cucumber', icon: '🥒', color: 'bg-green-100' },
       { id: 12, name: 'Corn', icon: '🌽', color: 'bg-yellow-100' },
+      { id: 34, name: 'Bell Pepper', icon: '🫑', color: 'bg-green-100' },
+      { id: 35, name: 'Onion', icon: '🧅', color: 'bg-yellow-50' },
+      { id: 36, name: 'Garlic', icon: '🧄', color: 'bg-gray-100' }
     ]
   },
   {
@@ -79,6 +85,9 @@ const allCrops = [
       { id: 13, name: 'Rice', icon: '🌾', color: 'bg-yellow-50' },
       { id: 14, name: 'Wheat', icon: '🌾', color: 'bg-yellow-100' },
       { id: 15, name: 'Barley', icon: '🌾', color: 'bg-yellow-50' },
+      { id: 37, name: 'Corn', icon: '🌽', color: 'bg-yellow-100' },
+      { id: 38, name: 'Oats', icon: '🌾', color: 'bg-yellow-50' },
+      { id: 39, name: 'Millet', icon: '🌾', color: 'bg-yellow-100' }
     ]
   },
   {
@@ -87,6 +96,9 @@ const allCrops = [
       { id: 16, name: 'Black Gram', icon: '🫘', color: 'bg-gray-100' },
       { id: 17, name: 'Green Gram', icon: '🫘', color: 'bg-green-100' },
       { id: 18, name: 'Chickpea', icon: '🫘', color: 'bg-yellow-100' },
+      { id: 40, name: 'Red Lentils', icon: '🫘', color: 'bg-red-100' },
+      { id: 41, name: 'Pigeon Pea', icon: '🫘', color: 'bg-yellow-50' },
+      { id: 42, name: 'Kidney Beans', icon: '🫘', color: 'bg-red-100' }
     ]
   }
 ];
@@ -94,9 +106,16 @@ const allCrops = [
 interface CropSelectionPopupProps {
   onClose: () => void;
   onSelect: (crop: CropItem) => void;
+  selectedCrops: CropItem[];
+  onRemove: (cropId: number) => void;
 }
 
-const CropSelectionPopup: React.FC<CropSelectionPopupProps> = ({ onClose, onSelect }) => {
+const CropSelectionPopup: React.FC<CropSelectionPopupProps> = ({ 
+  onClose, 
+  onSelect, 
+  selectedCrops,
+  onRemove 
+}) => {
   const [selectedCategory, setSelectedCategory] = useState(allCrops[0].name);
 
   return (
@@ -126,16 +145,30 @@ const CropSelectionPopup: React.FC<CropSelectionPopupProps> = ({ onClose, onSele
             <div className="grid grid-cols-3 gap-4">
               {allCrops
                 .find(cat => cat.name === selectedCategory)
-                ?.items.map(crop => (
-                  <button
-                    key={crop.id}
-                    onClick={() => onSelect(crop)}
-                    className="p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all flex flex-col items-center gap-2"
-                  >
-                    <span className={`text-3xl p-2 rounded-lg ${crop.color}`}>{crop.icon}</span>
-                    <span className="text-sm font-medium text-gray-700">{crop.name}</span>
-                  </button>
-                ))}
+                ?.items.map(crop => {
+                  const isSelected = selectedCrops.some(c => c.id === crop.id);
+                  return (
+                    <button
+                      key={crop.id}
+                      onClick={() => {
+                        if (isSelected) {
+                          onRemove(crop.id);
+                        } else if (selectedCrops.length < 8) {
+                          onSelect(crop);
+                        }
+                      }}
+                      className="p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all flex flex-col items-center gap-2 relative group"
+                    >
+                      <span className={`text-3xl p-2 rounded-lg ${crop.color}`}>{crop.icon}</span>
+                      <span className="text-sm font-medium text-gray-700">{crop.name}</span>
+                      {isSelected && (
+                        <span className="absolute -top-2 -right-2 w-6 h-6 bg-rose-100 text-rose-500 rounded-full flex items-center justify-center text-sm shadow-sm border border-rose-200">
+                          ×
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -384,6 +417,102 @@ const Home: FC = () => {
         'Improves eye health',
         'Aids digestion',
         'Supports skin health'
+      ]
+    },
+    {
+      id: 7,
+      name: 'Brinjal',
+      icon: '🍆',
+      color: 'bg-purple-100',
+      description: 'Brinjal or eggplant is a versatile vegetable rich in antioxidants and nutrients.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Vitamin B6', 'Potassium', 'Fiber'],
+      diseases: ['Verticillium Wilt', 'Bacterial Wilt', 'Fruit and Shoot Borer'],
+      cultivation: 'Brinjals need warm weather, well-drained soil, and full sunlight. Regular watering and proper spacing between plants is essential.',
+      benefits: [
+        'Rich in antioxidants',
+        'Helps in weight loss',
+        'Supports heart health',
+        'Improves digestion'
+      ]
+    },
+    {
+      id: 8,
+      name: 'Carrot',
+      icon: '🥕',
+      color: 'bg-orange-100',
+      description: 'Carrots are root vegetables known for their high beta-carotene content.',
+      vitamins: ['Vitamin A', 'Vitamin K', 'Vitamin C', 'Potassium', 'Fiber'],
+      diseases: ['Alternaria Leaf Blight', 'Black Rot', 'Root-Knot Nematodes'],
+      cultivation: 'Carrots need loose, well-drained soil and cool temperatures. Thin seedlings to allow proper root development.',
+      benefits: [
+        'Improves eye health',
+        'Boosts immune system',
+        'Promotes healthy skin',
+        'Aids in digestion'
+      ]
+    },
+    {
+      id: 9,
+      name: 'Potato',
+      icon: '🥔',
+      color: 'bg-yellow-50',
+      description: 'Potatoes are starchy tubers that are a staple food worldwide.',
+      vitamins: ['Vitamin C', 'Vitamin B6', 'Potassium', 'Magnesium'],
+      diseases: ['Late Blight', 'Early Blight', 'Black Scurf'],
+      cultivation: 'Potatoes need well-drained soil and full sun. Regular hilling and proper spacing are essential.',
+      benefits: [
+        'Good source of energy',
+        'Supports bone health',
+        'Reduces inflammation',
+        'Promotes heart health'
+      ]
+    },
+    {
+      id: 10,
+      name: 'Tomato',
+      icon: '🍅',
+      color: 'bg-red-100',
+      description: 'Tomatoes are rich in lycopene and essential vitamins.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Potassium', 'Folate'],
+      diseases: ['Early Blight', 'Late Blight', 'Fusarium Wilt'],
+      cultivation: 'Tomatoes need full sun and well-drained soil. Proper staking and regular pruning help in better yield.',
+      benefits: [
+        'Rich in antioxidants',
+        'Promotes heart health',
+        'Supports skin health',
+        'Aids in digestion'
+      ]
+    },
+    {
+      id: 13,
+      name: 'Rice',
+      icon: '🌾',
+      color: 'bg-yellow-50',
+      description: 'Rice is a staple grain that feeds billions of people worldwide.',
+      vitamins: ['Vitamin B1', 'Vitamin B6', 'Iron', 'Magnesium'],
+      diseases: ['Rice Blast', 'Bacterial Blight', 'Sheath Blight'],
+      cultivation: 'Rice needs standing water and warm temperatures. Proper water management and fertilization are crucial.',
+      benefits: [
+        'Energy source',
+        'Gluten-free grain',
+        'Easy to digest',
+        'Versatile food'
+      ]
+    },
+    {
+      id: 16,
+      name: 'Black Gram',
+      icon: '🫘',
+      color: 'bg-gray-100',
+      description: 'Black gram is a protein-rich pulse crop widely used in Indian cuisine.',
+      vitamins: ['Protein', 'Iron', 'Folate', 'Calcium'],
+      diseases: ['Yellow Mosaic', 'Powdery Mildew', 'Root Rot'],
+      cultivation: 'Black gram needs well-drained soil and moderate rainfall. Proper spacing and timely weeding are important.',
+      benefits: [
+        'High protein content',
+        'Rich in minerals',
+        'Good for diabetics',
+        'Improves digestive health'
       ]
     }
   ];
@@ -807,11 +936,15 @@ const Home: FC = () => {
       {showCropSelection && (
         <CropSelectionPopup
           onClose={() => setShowCropSelection(false)}
+          selectedCrops={selectedCrops}
           onSelect={(crop) => {
-            if (selectedCrops.length < 8) {
+            if (selectedCrops.length < 8 && !selectedCrops.some(c => c.id === crop.id)) {
               setSelectedCrops(prev => [...prev, crop]);
               setShowCropSelection(false);
             }
+          }}
+          onRemove={(cropId) => {
+            setSelectedCrops(prev => prev.filter(c => c.id !== cropId));
           }}
         />
       )}
