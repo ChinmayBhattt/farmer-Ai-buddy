@@ -1,8 +1,11 @@
-import type { FC } from 'react';
+import React, { type FC, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ChatBot from '../components/ChatBot';
+import FertilizerCalculator from '../components/FertilizerCalculator';
+import PestsAndDiseases from '../components/PestsAndDiseases';
+import CultivationTips from '../components/CultivationTips';
+import DiseaseAlert from '../components/DiseaseAlert';
 
 interface WeatherData {
   main: {
@@ -403,6 +406,7 @@ const Home: FC = () => {
   const [isCapturing, setIsCapturing] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [selectedTool, setSelectedTool] = useState<number | null>(null);
 
   const crops: FruitInfo[] = [
     {
@@ -1336,10 +1340,10 @@ const Home: FC = () => {
   ];
 
   const tools = [
-    { id: 1, name: 'Fertilizer calculator', icon: '🌱', path: '/calculator', color: 'bg-green-50' },
-    { id: 2, name: 'Pests & diseases', icon: '🐛', path: '/pests', color: 'bg-red-50' },
-    { id: 3, name: 'Cultivation Tips', icon: '🌿', path: '/tips', color: 'bg-blue-50' },
-    { id: 4, name: 'Pests and Disease Alert', icon: '⚠️', path: '/alerts', color: 'bg-orange-50' },
+    { id: 1, name: 'Fertilizer calculator', icon: '🌱', Component: FertilizerCalculator, color: 'bg-green-50' },
+    { id: 2, name: 'Pests & diseases', icon: '🐛', Component: PestsAndDiseases, color: 'bg-red-50' },
+    { id: 3, name: 'Cultivation Tips', icon: '🌿', Component: CultivationTips, color: 'bg-blue-50' },
+    { id: 4, name: 'Pests and Disease Alert', icon: '⚠️', Component: DiseaseAlert, color: 'bg-orange-50' },
   ];
 
   const navigationItems = [
@@ -1730,7 +1734,8 @@ const Home: FC = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
               whileHover={{ scale: 1.05 }}
-              className={`${tool.color} p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300`}
+              onClick={() => setSelectedTool(tool.id)}
+              className={`${tool.color} p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer`}
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -1748,6 +1753,29 @@ const Home: FC = () => {
           ))}
         </div>
       </motion.div>
+
+      {/* Tool Modal */}
+      {selectedTool && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white rounded-2xl w-[90%] max-w-4xl max-h-[90vh] overflow-y-auto relative"
+          >
+            <button
+              onClick={() => setSelectedTool(null)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl z-10"
+            >
+              ×
+            </button>
+            {selectedTool === 1 && <FertilizerCalculator />}
+            {selectedTool === 2 && <PestsAndDiseases />}
+            {selectedTool === 3 && <CultivationTips />}
+            {selectedTool === 4 && <DiseaseAlert />}
+          </motion.div>
+        </div>
+      )}
 
       {/* Chat Button */}
       <motion.button
