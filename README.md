@@ -1,7 +1,6 @@
-# Plantix Clone
+# FarmAI
 
-A clone of the Plantix app (https://plantix.net/en/) built with React, TypeScript, and Tailwind CSS.
-
+Smart Farmer Buddy is an AI-powered full-stack web application designed to assist Indian farmers with real-time agricultural advice. It provides personalized recommendations using AI and IoT technologies and works even in low-connectivity areas with offline support and multilingual voice commands.
 ## Features
 
 - 📸 Plant Disease Diagnosis with ML
