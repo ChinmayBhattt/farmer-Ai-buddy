@@ -1453,7 +1453,7 @@ const Home: FC = () => {
         },
         {
           headers: {
-            'Authorization': `Bearer `,
+            'Authorization': `Bearer ${import.meta.env.VITE_STABILITY_API_KEY}`,
             'Content-Type': 'application/json',
           },
         }
@@ -1476,14 +1476,14 @@ const Home: FC = () => {
         },
         {
           headers: {
-            'Authorization': `Bearer AIzaSyBfucKp8fKtvC57FZxi3BOhVrVPFehjc8Y`,
+            'Authorization': `Bearer ${import.meta.env.VITE_GEMINI_API_KEY}`,
             'Content-Type': 'application/json',
           },
         }
       );
 
       // Process the responses and update the chat
-      const analysisResult: ImageAnalysisResult = {
+      const result: ImageAnalysisResult = {
         description: geminiResponse.data.candidates[0].content.parts[0].text,
         diseases: stabilityResponse.data.diseases || [],
         treatment: geminiResponse.data.treatment || [],
@@ -1492,11 +1492,12 @@ const Home: FC = () => {
 
       // Add the analysis to the chat
       setShowChat(true);
+      setCapturedImage(null); // Clear the captured image after analysis
       // You'll need to implement a way to add this analysis to your chat component
-      // This depends on how your ChatBot component is structured
 
     } catch (error) {
       console.error('Error analyzing image:', error);
+      setCapturedImage(null); // Clear the captured image if there's an error
     }
   };
 
