@@ -46,9 +46,12 @@ interface CropItem {
   color: string;
 }
 
+interface CropCategory {
+  name: string;
+  items: CropItem[];
+}
 
-
-const allCrops = [
+const allCrops: CropCategory[] = [
   {
     name: "Fruits",
     items: [
