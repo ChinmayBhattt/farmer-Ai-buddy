@@ -12,6 +12,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
     "@heroicons/react": "^2.2.0",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tensorflow-models/mobilenet": "^2.1.1",
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.8.4",
