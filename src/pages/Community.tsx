@@ -49,8 +49,7 @@ const NEWS_API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const GNEWS_API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
 
 const Community: FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [newsItems, setNewsItems] = useState<NewsItem[]>(FALLBACK_NEWS); // Initialize with fallback data
+  const [newsItems, setNewsItems] = useState<NewsItem[]>(FALLBACK_NEWS);
   const [activeFilter, setActiveFilter] = useState('all');
   const [retryCount, setRetryCount] = useState(0);
 
@@ -62,7 +61,6 @@ const Community: FC = () => {
   ];
 
   const fetchNews = async () => {
-    setIsLoading(true);
     try {
       const query = activeFilter === 'all' 
         ? 'climate crisis OR environmental disaster OR water shortage'
@@ -113,21 +111,17 @@ const Community: FC = () => {
         setNewsItems(processedNews);
         setRetryCount(0);
       } else if (retryCount < 3) {
-        // Retry up to 3 times if no articles are found
         setRetryCount(prev => prev + 1);
         setTimeout(fetchNews, 2000);
       }
-    } catch (error) {
-      console.error('Error fetching news:', error);
-      // Keep showing fallback content if fetch fails
-    } finally {
-      setIsLoading(false);
+    } catch (err: unknown) {
+      console.error('Failed to fetch news:', err instanceof Error ? err.message : 'Unknown error');
     }
   };
 
   useEffect(() => {
     fetchNews();
-    const interval = setInterval(fetchNews, 300000); // Refresh every 5 minutes
+    const interval = setInterval(fetchNews, 300000);
     return () => clearInterval(interval);
   }, [activeFilter]);
 
