@@ -1,8 +1,9 @@
 import type { FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ChatBot from '../components/ChatBot';
+import axios from 'axios';
 
 interface WeatherData {
   main: {
@@ -45,10 +46,7 @@ interface CropItem {
   color: string;
 }
 
-interface CropCategory {
-  name: string;
-  items: CropItem[];
-}
+
 
 const allCrops = [
   {
@@ -359,6 +357,14 @@ const FruitPopup = ({ fruit, onClose }: { fruit: FruitInfo; onClose: () => void 
   );
 };
 
+// Add these interfaces
+interface ImageAnalysisResult {
+  description: string;
+  diseases: string[];
+  treatment: string[];
+  prevention: string[];
+}
+
 const Home: FC = () => {
   const [events] = useState([
     {
@@ -398,6 +404,10 @@ const Home: FC = () => {
   const [showCropSelection, setShowCropSelection] = useState(false);
   const defaultCrops = allCrops[0].items.slice(0, 4); // Get first 4 fruits from allCrops
   const [selectedCrops, setSelectedCrops] = useState<CropItem[]>(defaultCrops);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const crops: FruitInfo[] = [
     {
@@ -1403,6 +1413,90 @@ const Home: FC = () => {
     return () => document.removeEventListener('closeChatBot', handleCloseChatBot);
   }, []);
 
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+    }
+  };
+
+  const captureImage = () => {
+    if (videoRef.current && canvasRef.current) {
+      const context = canvasRef.current.getContext('2d');
+      if (context) {
+        canvasRef.current.width = videoRef.current.videoWidth;
+        canvasRef.current.height = videoRef.current.videoHeight;
+        context.drawImage(videoRef.current, 0, 0);
+        const imageData = canvasRef.current.toDataURL('image/jpeg');
+        setCapturedImage(imageData);
+        setIsCapturing(false);
+        analyzeImage(imageData);
+      }
+    }
+  };
+
+  const analyzeImage = async (imageData: string) => {
+    try {
+      // First, use Stability AI to analyze the image
+      const stabilityResponse = await axios.post(
+        'https://api.stability.ai/v1/engines/stable-diffusion-xl-1024-v1-0/image-to-image',
+        {
+          image: imageData.split(',')[1], // Remove the data URL prefix
+          prompt: "Analyze this crop image and identify any diseases or issues",
+        },
+        {
+          headers: {
+            'Authorization': `Bearer sk-1OSDFaXPJSaszD2vsmaGFjRSK2142Q4yOlYFoGss4gW3rL2W`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // Then, use Gemini API to get detailed analysis
+      const geminiResponse = await axios.post(
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+        {
+          contents: [{
+            parts: [{
+              text: `Analyze this crop image and provide detailed information about:
+              1. Plant identification
+              2. Potential diseases
+              3. Treatment recommendations
+              4. Prevention tips
+              Image: ${imageData}`
+            }]
+          }]
+        },
+        {
+          headers: {
+            'Authorization': `Bearer AIzaSyBfucKp8fKtvC57FZxi3BOhVrVPFehjc8Y`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // Process the responses and update the chat
+      const analysisResult: ImageAnalysisResult = {
+        description: geminiResponse.data.candidates[0].content.parts[0].text,
+        diseases: stabilityResponse.data.diseases || [],
+        treatment: geminiResponse.data.treatment || [],
+        prevention: geminiResponse.data.prevention || []
+      };
+
+      // Add the analysis to the chat
+      setShowChat(true);
+      // You'll need to implement a way to add this analysis to your chat component
+      // This depends on how your ChatBot component is structured
+
+    } catch (error) {
+      console.error('Error analyzing image:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white pb-24">
       {/* Header with Animated Background */}
@@ -1671,6 +1765,10 @@ const Home: FC = () => {
           <motion.button 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              setIsCapturing(true);
+              startCamera();
+            }}
             className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl py-4 font-medium shadow-sm hover:shadow-md transition-shadow duration-300"
           >
             Take a picture
@@ -1802,6 +1900,38 @@ const Home: FC = () => {
           </Link>
         ))}
       </motion.div>
+
+      {/* Add the camera capture UI */}
+      {isCapturing && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+            <h2 className="text-xl font-semibold mb-4">Take a picture of your crop</h2>
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              className="w-full rounded-lg mb-4"
+            />
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setIsCapturing(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={captureImage}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Capture
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add hidden canvas for image capture */}
+      <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 };
