@@ -1,7 +1,6 @@
-# FarmAi
+# Plantix Clone
 
-Empowering Farmers with Real-Time AI Support, Voice Assistant & Offline Capability
-(https://farmer-ai-buddy.vercel.app/) built with React, TypeScript, and Tailwind CSS.
+A clone of the Plantix app (https://plantix.net/en/) built with React, TypeScript, and Tailwind CSS.
 
 ## Features
 
@@ -28,7 +27,7 @@ Empowering Farmers with Real-Time AI Support, Voice Assistant & Offline Capabili
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/plantix-clone.git (https://github.com/ChinmayBhattt/farmer-Ai-buddy.git)
+git clone https://github.com/yourusername/plantix-clone.git
 cd plantix-clone
 ```
 
@@ -86,4 +85,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Original Plantix app by PEAT Digital GmbH
 - Icons from Heroicons
-- UI components from Headless UI
+- UI components from Headless UI 
