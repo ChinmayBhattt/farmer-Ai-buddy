@@ -1453,7 +1453,7 @@ const Home: FC = () => {
         },
         {
           headers: {
-            'Authorization': `Bearer sk-1OSDFaXPJSaszD2vsmaGFjRSK2142Q4yOlYFoGss4gW3rL2W`,
+            'Authorization': `Bearer `,
             'Content-Type': 'application/json',
           },
         }
