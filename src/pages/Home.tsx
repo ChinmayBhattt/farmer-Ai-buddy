@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ChatBot from '../components/ChatBot';
@@ -25,6 +25,123 @@ interface LocationData {
   lat: number;
   lon: number;
 }
+
+interface FruitInfo {
+  id: number;
+  name: string;
+  icon: string;
+  color: string;
+  description: string;
+  vitamins: string[];
+  diseases: string[];
+  cultivation: string;
+  benefits: string[];
+}
+
+const FruitPopup = ({ fruit, onClose }: { fruit: FruitInfo; onClose: () => void }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.5, y: 100 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.5, y: 100 }}
+        transition={{ type: "spring", damping: 15 }}
+        className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <span className={`text-4xl p-3 rounded-lg ${fruit.color}`}>{fruit.icon}</span>
+            <h2 className="text-2xl font-bold text-gray-800">{fruit.name}</h2>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            ×
+          </motion.button>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <p className="text-gray-600">{fruit.description}</p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-gray-800 mb-2">Vitamins & Nutrients</h3>
+            <div className="flex flex-wrap gap-2">
+              {fruit.vitamins.map((vitamin, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm"
+                >
+                  {vitamin}
+                </motion.span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-gray-800 mb-2">Common Diseases</h3>
+            <div className="space-y-2">
+              {fruit.diseases.map((disease, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-red-50 text-red-700 p-2 rounded-lg text-sm"
+                >
+                  {disease}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-gray-800 mb-2">Cultivation Guide</h3>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="bg-blue-50 text-blue-700 p-3 rounded-lg text-sm"
+            >
+              {fruit.cultivation}
+            </motion.div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-gray-800 mb-2">Health Benefits</h3>
+            <ul className="space-y-2">
+              {fruit.benefits.map((benefit, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-center gap-2 text-gray-600"
+                >
+                  <span className="text-green-500">✓</span>
+                  {benefit}
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const Home: FC = () => {
   const [events] = useState([
@@ -61,12 +178,73 @@ const Home: FC = () => {
     location: 'Mumbai, India'
   });
   const [showChat, setShowChat] = useState(false);
+  const [selectedFruit, setSelectedFruit] = useState<FruitInfo | null>(null);
 
-  const crops = [
-    { id: 1, name: 'Nuts', icon: '🥜', color: 'bg-purple-100' },
-    { id: 2, name: 'Apple', icon: '🍎', color: 'bg-red-100' },
-    { id: 3, name: 'Citrus', icon: '🍋', color: 'bg-yellow-100' },
-    { id: 4, name: 'Banana', icon: '🍌', color: 'bg-yellow-50' },
+  const crops: FruitInfo[] = [
+    {
+      id: 1,
+      name: 'Nuts',
+      icon: '🥜',
+      color: 'bg-purple-100',
+      description: 'Nutritious and protein-rich nuts are excellent for both health and farming income.',
+      vitamins: ['Vitamin E', 'Vitamin B6', 'Magnesium', 'Protein'],
+      diseases: ['Root Rot', 'Bacterial Blight', 'Leaf Spot'],
+      cultivation: 'Nuts require well-drained soil and full sun exposure. Regular pruning and proper spacing between trees is essential. Water deeply but infrequently to encourage deep root growth.',
+      benefits: [
+        'High in healthy fats',
+        'Excellent source of protein',
+        'Rich in antioxidants',
+        'Good for heart health'
+      ]
+    },
+    {
+      id: 2,
+      name: 'Apple',
+      icon: '🍎',
+      color: 'bg-red-100',
+      description: 'Sweet and crispy apples are one of the most popular fruits worldwide.',
+      vitamins: ['Vitamin C', 'Vitamin B6', 'Potassium', 'Fiber'],
+      diseases: ['Apple Scab', 'Fire Blight', 'Cedar Apple Rust'],
+      cultivation: 'Apples need full sun and well-drained soil. Regular pruning is essential for good fruit production. Requires proper spacing and pollination partners.',
+      benefits: [
+        'Improves heart health',
+        'Helps with weight loss',
+        'Boosts immune system',
+        'Good for digestion'
+      ]
+    },
+    {
+      id: 3,
+      name: 'Citrus',
+      icon: '🍋',
+      color: 'bg-yellow-100',
+      description: 'Vitamin C-rich citrus fruits are essential for immune system health.',
+      vitamins: ['Vitamin C', 'Vitamin A', 'Folate', 'Potassium'],
+      diseases: ['Citrus Canker', 'Greening Disease', 'Brown Rot'],
+      cultivation: 'Citrus trees need warm climate and well-drained soil. Protection from frost is essential. Regular fertilization and proper watering schedule required.',
+      benefits: [
+        'Boosts immunity',
+        'Improves skin health',
+        'Aids in iron absorption',
+        'Reduces inflammation'
+      ]
+    },
+    {
+      id: 4,
+      name: 'Banana',
+      icon: '🍌',
+      color: 'bg-yellow-50',
+      description: 'Energy-rich bananas are perfect for quick nutrition and easy cultivation.',
+      vitamins: ['Vitamin B6', 'Vitamin C', 'Potassium', 'Fiber'],
+      diseases: ['Panama Disease', 'Black Sigatoka', 'Banana Bunchy Top'],
+      cultivation: 'Bananas need rich, well-drained soil and plenty of organic matter. Regular watering and protection from strong winds is important.',
+      benefits: [
+        'Quick energy source',
+        'Supports muscle function',
+        'Aids in digestion',
+        'Good for heart health'
+      ]
+    },
   ];
 
   const tools = [
@@ -167,7 +345,7 @@ const Home: FC = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex space-x-4 overflow-x-auto mb-4"
+          className="flex space-x-4 overflow-x-auto mb-4 px-4"
         >
           {crops.map((crop, index) => (
             <motion.div
@@ -179,7 +357,10 @@ const Home: FC = () => {
               whileTap={{ scale: 0.95 }}
               className="flex-shrink-0"
             >
-              <button className={`w-16 h-16 rounded-full ${crop.color} flex items-center justify-center text-2xl border border-gray-100`}>
+              <button 
+                onClick={() => setSelectedFruit(crop)}
+                className={`w-16 h-16 rounded-full ${crop.color} flex items-center justify-center text-2xl border border-gray-100 hover:shadow-lg transition-shadow duration-300`}
+              >
                 {crop.icon}
               </button>
             </motion.div>
@@ -474,6 +655,16 @@ const Home: FC = () => {
 
       {/* Chat Bot */}
       {showChat && <ChatBot />}
+
+      {/* Fruit Information Popup */}
+      <AnimatePresence>
+        {selectedFruit && (
+          <FruitPopup 
+            fruit={selectedFruit} 
+            onClose={() => setSelectedFruit(null)} 
+          />
+        )}
+      </AnimatePresence>
 
       {/* Bottom Navigation */}
       <motion.div
