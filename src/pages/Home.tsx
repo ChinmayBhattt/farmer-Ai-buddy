@@ -38,6 +38,112 @@ interface FruitInfo {
   benefits: string[];
 }
 
+interface CropItem {
+  id: number;
+  name: string;
+  icon: string;
+  color: string;
+}
+
+interface CropCategory {
+  name: string;
+  items: CropItem[];
+}
+
+const allCrops = [
+  {
+    name: "Fruits",
+    items: [
+      { id: 1, name: 'Apple', icon: '🍎', color: 'bg-red-100' },
+      { id: 2, name: 'Banana', icon: '🍌', color: 'bg-yellow-100' },
+      { id: 3, name: 'Orange', icon: '🍊', color: 'bg-orange-100' },
+      { id: 4, name: 'Grapes', icon: '🍇', color: 'bg-purple-100' },
+      { id: 5, name: 'Watermelon', icon: '🍉', color: 'bg-red-100' },
+      { id: 6, name: 'Mango', icon: '🥭', color: 'bg-yellow-100' },
+    ]
+  },
+  {
+    name: "Vegetables",
+    items: [
+      { id: 7, name: 'Brinjal', icon: '🍆', color: 'bg-purple-100' },
+      { id: 8, name: 'Carrot', icon: '🥕', color: 'bg-orange-100' },
+      { id: 9, name: 'Potato', icon: '🥔', color: 'bg-yellow-50' },
+      { id: 10, name: 'Tomato', icon: '🍅', color: 'bg-red-100' },
+      { id: 11, name: 'Cucumber', icon: '🥒', color: 'bg-green-100' },
+      { id: 12, name: 'Corn', icon: '🌽', color: 'bg-yellow-100' },
+    ]
+  },
+  {
+    name: "Grains",
+    items: [
+      { id: 13, name: 'Rice', icon: '🌾', color: 'bg-yellow-50' },
+      { id: 14, name: 'Wheat', icon: '🌾', color: 'bg-yellow-100' },
+      { id: 15, name: 'Barley', icon: '🌾', color: 'bg-yellow-50' },
+    ]
+  },
+  {
+    name: "Pulses",
+    items: [
+      { id: 16, name: 'Black Gram', icon: '🫘', color: 'bg-gray-100' },
+      { id: 17, name: 'Green Gram', icon: '🫘', color: 'bg-green-100' },
+      { id: 18, name: 'Chickpea', icon: '🫘', color: 'bg-yellow-100' },
+    ]
+  }
+];
+
+interface CropSelectionPopupProps {
+  onClose: () => void;
+  onSelect: (crop: CropItem) => void;
+}
+
+const CropSelectionPopup: React.FC<CropSelectionPopupProps> = ({ onClose, onSelect }) => {
+  const [selectedCategory, setSelectedCategory] = useState(allCrops[0].name);
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+      <div className="bg-white rounded-2xl w-[90%] max-w-2xl max-h-[80vh] overflow-hidden">
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-green-500 to-blue-500 text-white">
+          <h2 className="text-xl font-semibold">Select crops (up to 8)</h2>
+          <button onClick={onClose} className="text-2xl">×</button>
+        </div>
+
+        <div className="flex h-[calc(80vh-64px)]">
+          <div className="w-1/3 border-r border-gray-200 overflow-y-auto bg-gray-50">
+            {allCrops.map(category => (
+              <button
+                key={category.name}
+                onClick={() => setSelectedCategory(category.name)}
+                className={`w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors ${
+                  selectedCategory === category.name ? 'bg-blue-50 border-l-4 border-blue-500' : ''
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex-1 p-4 overflow-y-auto">
+            <div className="grid grid-cols-3 gap-4">
+              {allCrops
+                .find(cat => cat.name === selectedCategory)
+                ?.items.map(crop => (
+                  <button
+                    key={crop.id}
+                    onClick={() => onSelect(crop)}
+                    className="p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all flex flex-col items-center gap-2"
+                  >
+                    <span className={`text-3xl p-2 rounded-lg ${crop.color}`}>{crop.icon}</span>
+                    <span className="text-sm font-medium text-gray-700">{crop.name}</span>
+                  </button>
+                ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const FruitPopup = ({ fruit, onClose }: { fruit: FruitInfo; onClose: () => void }) => {
   return (
     <motion.div
@@ -179,26 +285,13 @@ const Home: FC = () => {
   });
   const [showChat, setShowChat] = useState(false);
   const [selectedFruit, setSelectedFruit] = useState<FruitInfo | null>(null);
+  const [showCropSelection, setShowCropSelection] = useState(false);
+  const defaultCrops = allCrops[0].items.slice(0, 4); // Get first 4 fruits from allCrops
+  const [selectedCrops, setSelectedCrops] = useState<CropItem[]>(defaultCrops);
 
   const crops: FruitInfo[] = [
     {
       id: 1,
-      name: 'Nuts',
-      icon: '🥜',
-      color: 'bg-purple-100',
-      description: 'Nutritious and protein-rich nuts are excellent for both health and farming income.',
-      vitamins: ['Vitamin E', 'Vitamin B6', 'Magnesium', 'Protein'],
-      diseases: ['Root Rot', 'Bacterial Blight', 'Leaf Spot'],
-      cultivation: 'Nuts require well-drained soil and full sun exposure. Regular pruning and proper spacing between trees is essential. Water deeply but infrequently to encourage deep root growth.',
-      benefits: [
-        'High in healthy fats',
-        'Excellent source of protein',
-        'Rich in antioxidants',
-        'Good for heart health'
-      ]
-    },
-    {
-      id: 2,
       name: 'Apple',
       icon: '🍎',
       color: 'bg-red-100',
@@ -214,10 +307,26 @@ const Home: FC = () => {
       ]
     },
     {
-      id: 3,
-      name: 'Citrus',
-      icon: '🍋',
+      id: 2,
+      name: 'Banana',
+      icon: '🍌',
       color: 'bg-yellow-100',
+      description: 'Energy-rich bananas are perfect for quick nutrition and easy cultivation.',
+      vitamins: ['Vitamin B6', 'Vitamin C', 'Potassium', 'Fiber'],
+      diseases: ['Panama Disease', 'Black Sigatoka', 'Banana Bunchy Top'],
+      cultivation: 'Bananas need rich, well-drained soil and plenty of organic matter. Regular watering and protection from strong winds is important.',
+      benefits: [
+        'Quick energy source',
+        'Supports muscle function',
+        'Aids in digestion',
+        'Good for heart health'
+      ]
+    },
+    {
+      id: 3,
+      name: 'Orange',
+      icon: '🍊',
+      color: 'bg-orange-100',
       description: 'Vitamin C-rich citrus fruits are essential for immune system health.',
       vitamins: ['Vitamin C', 'Vitamin A', 'Folate', 'Potassium'],
       diseases: ['Citrus Canker', 'Greening Disease', 'Brown Rot'],
@@ -231,20 +340,52 @@ const Home: FC = () => {
     },
     {
       id: 4,
-      name: 'Banana',
-      icon: '🍌',
-      color: 'bg-yellow-50',
-      description: 'Energy-rich bananas are perfect for quick nutrition and easy cultivation.',
-      vitamins: ['Vitamin B6', 'Vitamin C', 'Potassium', 'Fiber'],
-      diseases: ['Panama Disease', 'Black Sigatoka', 'Banana Bunchy Top'],
-      cultivation: 'Bananas need rich, well-drained soil and plenty of organic matter. Regular watering and protection from strong winds is important.',
+      name: 'Grapes',
+      icon: '🍇',
+      color: 'bg-purple-100',
+      description: 'Sweet and juicy grapes are excellent for both fresh consumption and wine production.',
+      vitamins: ['Vitamin K', 'Vitamin C', 'Antioxidants', 'Resveratrol'],
+      diseases: ['Powdery Mildew', 'Black Rot', 'Downy Mildew'],
+      cultivation: 'Grapes need strong support systems and regular pruning. Well-drained soil and full sun exposure are essential.',
       benefits: [
-        'Quick energy source',
-        'Supports muscle function',
-        'Aids in digestion',
-        'Good for heart health'
+        'Rich in antioxidants',
+        'Supports heart health',
+        'Anti-aging properties',
+        'Helps reduce inflammation'
       ]
     },
+    {
+      id: 5,
+      name: 'Watermelon',
+      icon: '🍉',
+      color: 'bg-red-100',
+      description: 'Refreshing and hydrating watermelon is perfect for hot summer days.',
+      vitamins: ['Vitamin A', 'Vitamin C', 'Lycopene', 'Potassium'],
+      diseases: ['Fusarium Wilt', 'Anthracnose', 'Powdery Mildew'],
+      cultivation: 'Watermelons need lots of space, warm temperatures, and consistent moisture. Sandy, well-drained soil is ideal.',
+      benefits: [
+        'Hydrating properties',
+        'Rich in antioxidants',
+        'Supports heart health',
+        'Anti-inflammatory'
+      ]
+    },
+    {
+      id: 6,
+      name: 'Mango',
+      icon: '🥭',
+      color: 'bg-yellow-100',
+      description: 'Sweet and tropical mangoes are known as the king of fruits.',
+      vitamins: ['Vitamin A', 'Vitamin C', 'Vitamin B6', 'Fiber'],
+      diseases: ['Anthracnose', 'Powdery Mildew', 'Stem End Rot'],
+      cultivation: 'Mangoes need tropical climate, protection from strong winds, and well-drained soil. Regular pruning helps in better fruit production.',
+      benefits: [
+        'Boosts immunity',
+        'Improves eye health',
+        'Aids digestion',
+        'Supports skin health'
+      ]
+    }
   ];
 
   const tools = [
@@ -347,18 +488,21 @@ const Home: FC = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex space-x-4 overflow-x-auto mb-4 px-4"
         >
-          {crops.map((crop, index) => (
+          {selectedCrops.map((crop: CropItem) => (
             <motion.div
               key={crop.id}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex-shrink-0"
+              className="relative"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
             >
               <button 
-                onClick={() => setSelectedFruit(crop)}
+                onClick={() => {
+                  const fruitInfo = crops.find(f => f.name === crop.name);
+                  if (fruitInfo) {
+                    setSelectedFruit(fruitInfo);
+                  }
+                }}
                 className={`w-16 h-16 rounded-full ${crop.color} flex items-center justify-center text-2xl border border-gray-100 hover:shadow-lg transition-shadow duration-300`}
               >
                 {crop.icon}
@@ -373,7 +517,10 @@ const Home: FC = () => {
             whileTap={{ scale: 0.95 }}
             className="flex-shrink-0"
           >
-            <button className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl">
+            <button 
+              onClick={() => setShowCropSelection(true)}
+              className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl hover:bg-blue-600 transition-colors"
+            >
               +
             </button>
           </motion.div>
@@ -655,6 +802,19 @@ const Home: FC = () => {
 
       {/* Chat Bot */}
       {showChat && <ChatBot />}
+
+      {/* Crop Selection Popup */}
+      {showCropSelection && (
+        <CropSelectionPopup
+          onClose={() => setShowCropSelection(false)}
+          onSelect={(crop) => {
+            if (selectedCrops.length < 8) {
+              setSelectedCrops(prev => [...prev, crop]);
+              setShowCropSelection(false);
+            }
+          }}
+        />
+      )}
 
       {/* Fruit Information Popup */}
       <AnimatePresence>
