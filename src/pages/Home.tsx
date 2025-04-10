@@ -368,6 +368,11 @@ interface ImageAnalysisResult {
   prevention: string[];
 }
 
+interface Message {
+  text: string;
+  isUser: boolean;
+}
+
 const Home: FC = () => {
   const [events] = useState([
     {
@@ -411,6 +416,7 @@ const Home: FC = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const crops: FruitInfo[] = [
     {
@@ -1448,7 +1454,7 @@ const Home: FC = () => {
       const stabilityResponse = await axios.post(
         'https://api.stability.ai/v1/engines/stable-diffusion-xl-1024-v1-0/image-to-image',
         {
-          image: imageData.split(',')[1], // Remove the data URL prefix
+          image: imageData.split(',')[1],
           prompt: "Analyze this crop image and identify any diseases or issues",
         },
         {
@@ -1483,21 +1489,21 @@ const Home: FC = () => {
       );
 
       // Process the responses and update the chat
-      const result: ImageAnalysisResult = {
-        description: geminiResponse.data.candidates[0].content.parts[0].text,
-        diseases: stabilityResponse.data.diseases || [],
-        treatment: geminiResponse.data.treatment || [],
-        prevention: geminiResponse.data.prevention || []
-      };
-
-      // Add the analysis to the chat
       setShowChat(true);
-      setCapturedImage(null); // Clear the captured image after analysis
-      // You'll need to implement a way to add this analysis to your chat component
+      setMessages(prev => [...prev, {
+        text: geminiResponse.data.candidates[0].content.parts[0].text,
+        isUser: false
+      }]);
 
     } catch (error) {
       console.error('Error analyzing image:', error);
-      setCapturedImage(null); // Clear the captured image if there's an error
+      setShowChat(true);
+      setMessages(prev => [...prev, {
+        text: "Sorry, I couldn't analyze the image. Please try again.",
+        isUser: false
+      }]);
+    } finally {
+      setCapturedImage(null); // Clear the captured image after analysis
     }
   };
 
