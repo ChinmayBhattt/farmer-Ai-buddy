@@ -360,13 +360,13 @@ const FruitPopup = ({ fruit, onClose }: { fruit: FruitInfo; onClose: () => void 
   );
 };
 
-// Add these interfaces
-interface ImageAnalysisResult {
-  description: string;
-  diseases: string[];
-  treatment: string[];
-  prevention: string[];
-}
+// // Add these interfaces
+// interface ImageAnalysisResult {
+//   description: string;
+//   diseases: string[];
+//   treatment: string[];
+//   prevention: string[];
+// }
 
 interface Message {
   text: string;
@@ -413,10 +413,8 @@ const Home: FC = () => {
   const defaultCrops = allCrops[0].items.slice(0, 4); // Get first 4 fruits from allCrops
   const [selectedCrops, setSelectedCrops] = useState<CropItem[]>(defaultCrops);
   const [isCapturing, setIsCapturing] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
 
   const crops: FruitInfo[] = [
     {
@@ -1440,72 +1438,15 @@ const Home: FC = () => {
         canvasRef.current.width = videoRef.current.videoWidth;
         canvasRef.current.height = videoRef.current.videoHeight;
         context.drawImage(videoRef.current, 0, 0);
-        const imageData = canvasRef.current.toDataURL('image/jpeg');
-        setCapturedImage(imageData);
         setIsCapturing(false);
-        analyzeImage(imageData);
       }
     }
   };
 
-  const analyzeImage = async (imageData: string) => {
-    try {
-      // First, use Stability AI to analyze the image
-      const stabilityResponse = await axios.post(
-        'https://api.stability.ai/v1/engines/stable-diffusion-xl-1024-v1-0/image-to-image',
-        {
-          image: imageData.split(',')[1],
-          prompt: "Analyze this crop image and identify any diseases or issues",
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_STABILITY_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+  
 
       // Then, use Gemini API to get detailed analysis
-      const geminiResponse = await axios.post(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
-        {
-          contents: [{
-            parts: [{
-              text: `Analyze this crop image and provide detailed information about:
-              1. Plant identification
-              2. Potential diseases
-              3. Treatment recommendations
-              4. Prevention tips
-              Image: ${imageData}`
-            }]
-          }]
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_GEMINI_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
 
-      // Process the responses and update the chat
-      setShowChat(true);
-      setMessages(prev => [...prev, {
-        text: geminiResponse.data.candidates[0].content.parts[0].text,
-        isUser: false
-      }]);
-
-    } catch (error) {
-      console.error('Error analyzing image:', error);
-      setShowChat(true);
-      setMessages(prev => [...prev, {
-        text: "Sorry, I couldn't analyze the image. Please try again.",
-        isUser: false
-      }]);
-    } finally {
-      setCapturedImage(null); // Clear the captured image after analysis
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white pb-24">
