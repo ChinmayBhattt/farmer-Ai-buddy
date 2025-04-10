@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ChatBot from '../components/ChatBot';
-import axios from 'axios';
 
 interface WeatherData {
   main: {
@@ -360,18 +359,7 @@ const FruitPopup = ({ fruit, onClose }: { fruit: FruitInfo; onClose: () => void 
   );
 };
 
-// // Add these interfaces
-// interface ImageAnalysisResult {
-//   description: string;
-//   diseases: string[];
-//   treatment: string[];
-//   prevention: string[];
-// }
 
-interface Message {
-  text: string;
-  isUser: boolean;
-}
 
 const Home: FC = () => {
   const [events] = useState([
