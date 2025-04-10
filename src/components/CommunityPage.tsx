@@ -7,7 +7,6 @@ import PostCard from './PostCard';
 
 // API Configuration - Store these in .env in production
 const NEWS_API_KEY = "214dd7948c3c40d2aed19e83dd85b49c";
-const NASA_API_KEY = "87345ui3i45y7p3tfg34g";
 const GNEWS_API_KEY = "fec47d5ece60d00f0789fe9cd1dab73d";
 
 // Update template posts with better content
@@ -111,7 +110,7 @@ const CommunityPage: React.FC = () => {
             pageSize: 10,
             language: 'en'
           }
-        }).catch(error => ({ data: { articles: [] } })), // Fallback to empty array on error
+        }).catch((_: unknown) => ({ data: { articles: [] } })), // Fallback to empty array on error
         axios.get('https://gnews.io/api/v4/search', {
           params: {
             q: searchTerm,
@@ -119,7 +118,7 @@ const CommunityPage: React.FC = () => {
             max: 5,
             lang: 'en'
           }
-        }).catch(error => ({ data: { articles: [] } })) // Fallback to empty array on error
+        }).catch((_: unknown) => ({ data: { articles: [] } })) // Fallback to empty array on error
       ]);
 
       const combinedNews = [
