@@ -62,7 +62,44 @@ const allCrops = [
       { id: 6, name: 'Mango', icon: '🥭', color: 'bg-yellow-100' },
       { id: 31, name: 'Pineapple', icon: '🍍', color: 'bg-yellow-100' },
       { id: 32, name: 'Strawberry', icon: '🍓', color: 'bg-red-100' },
-      { id: 33, name: 'Peach', icon: '🍑', color: 'bg-orange-100' }
+      { id: 33, name: 'Peach', icon: '🍑', color: 'bg-orange-100' },
+      { id: 34, name: 'Pear', icon: '🍐', color: 'bg-green-100' },
+      { id: 35, name: 'Kiwi', icon: '🥝', color: 'bg-green-100' },
+      { id: 36, name: 'Cherry', icon: '🍒', color: 'bg-red-100' },
+      { id: 37, name: 'Blueberry', icon: '🫐', color: 'bg-blue-100' },
+      { id: 38, name: 'Raspberry', icon: '🍇', color: 'bg-red-100' },
+      { id: 39, name: 'Blackberry', icon: '🍇', color: 'bg-purple-100' },
+      { id: 40, name: 'Apricot', icon: '🍑', color: 'bg-orange-100' },
+      { id: 41, name: 'Plum', icon: '🍑', color: 'bg-purple-100' },
+      { id: 42, name: 'Guava', icon: '🥭', color: 'bg-green-100' },
+      { id: 43, name: 'Pomegranate', icon: '🍎', color: 'bg-red-100' },
+      { id: 44, name: 'Papaya', icon: '🥭', color: 'bg-orange-100' },
+      { id: 45, name: 'Lychee', icon: '🍇', color: 'bg-red-100' },
+      { id: 46, name: 'Dragon Fruit', icon: '🥭', color: 'bg-pink-100' },
+      { id: 47, name: 'Passion Fruit', icon: '🍇', color: 'bg-purple-100' },
+      { id: 48, name: 'Jackfruit', icon: '🥭', color: 'bg-yellow-100' },
+      { id: 49, name: 'Custard Apple', icon: '🍎', color: 'bg-green-100' },
+      { id: 50, name: 'Star Fruit', icon: '⭐', color: 'bg-yellow-100' },
+      { id: 51, name: 'Persimmon', icon: '🍎', color: 'bg-orange-100' },
+      { id: 52, name: 'Fig', icon: '🍇', color: 'bg-purple-100' },
+      { id: 53, name: 'Date', icon: '🍇', color: 'bg-brown-100' },
+      { id: 54, name: 'Coconut', icon: '🥥', color: 'bg-brown-100' },
+      { id: 55, name: 'Avocado', icon: '🥑', color: 'bg-green-100' },
+      { id: 56, name: 'Lemon', icon: '🍋', color: 'bg-yellow-100' },
+      { id: 57, name: 'Lime', icon: '🍋', color: 'bg-green-100' },
+      { id: 58, name: 'Grapefruit', icon: '🍊', color: 'bg-orange-100' },
+      { id: 59, name: 'Tangerine', icon: '🍊', color: 'bg-orange-100' },
+      { id: 60, name: 'Clementine', icon: '🍊', color: 'bg-orange-100' },
+      { id: 61, name: 'Kumquat', icon: '🍊', color: 'bg-orange-100' },
+      { id: 62, name: 'Nectarine', icon: '🍑', color: 'bg-orange-100' },
+      { id: 63, name: 'Mulberry', icon: '🍇', color: 'bg-purple-100' },
+      { id: 64, name: 'Elderberry', icon: '🍇', color: 'bg-purple-100' },
+      { id: 65, name: 'Gooseberry', icon: '🍇', color: 'bg-green-100' },
+      { id: 66, name: 'Cranberry', icon: '🍇', color: 'bg-red-100' },
+      { id: 67, name: 'Currant', icon: '🍇', color: 'bg-purple-100' },
+      { id: 68, name: 'Quince', icon: '🍎', color: 'bg-yellow-100' },
+      { id: 69, name: 'Loquat', icon: '🍎', color: 'bg-orange-100' },
+      { id: 70, name: 'Soursop', icon: '🥭', color: 'bg-green-100' }
     ]
   },
   {
@@ -76,7 +113,47 @@ const allCrops = [
       { id: 12, name: 'Corn', icon: '🌽', color: 'bg-yellow-100' },
       { id: 34, name: 'Bell Pepper', icon: '🫑', color: 'bg-green-100' },
       { id: 35, name: 'Onion', icon: '🧅', color: 'bg-yellow-50' },
-      { id: 36, name: 'Garlic', icon: '🧄', color: 'bg-gray-100' }
+      { id: 36, name: 'Garlic', icon: '🧄', color: 'bg-gray-100' },
+      { id: 71, name: 'Broccoli', icon: '🥦', color: 'bg-green-100' },
+      { id: 72, name: 'Cauliflower', icon: '🥦', color: 'bg-white' },
+      { id: 73, name: 'Cabbage', icon: '🥬', color: 'bg-green-100' },
+      { id: 74, name: 'Spinach', icon: '🥬', color: 'bg-green-100' },
+      { id: 75, name: 'Lettuce', icon: '🥬', color: 'bg-green-100' },
+      { id: 76, name: 'Kale', icon: '🥬', color: 'bg-green-100' },
+      { id: 77, name: 'Zucchini', icon: '🥒', color: 'bg-green-100' },
+      { id: 78, name: 'Pumpkin', icon: '🎃', color: 'bg-orange-100' },
+      { id: 79, name: 'Sweet Potato', icon: '🍠', color: 'bg-orange-100' },
+      { id: 80, name: 'Beetroot', icon: '🥕', color: 'bg-red-100' },
+      { id: 81, name: 'Radish', icon: '🥕', color: 'bg-red-100' },
+      { id: 82, name: 'Turnip', icon: '🥕', color: 'bg-white' },
+      { id: 83, name: 'Parsnip', icon: '🥕', color: 'bg-white' },
+      { id: 84, name: 'Celery', icon: '🥬', color: 'bg-green-100' },
+      { id: 85, name: 'Asparagus', icon: '🥬', color: 'bg-green-100' },
+      { id: 86, name: 'Artichoke', icon: '🥬', color: 'bg-green-100' },
+      { id: 87, name: 'Brussels Sprouts', icon: '🥬', color: 'bg-green-100' },
+      { id: 88, name: 'Green Beans', icon: '🥬', color: 'bg-green-100' },
+      { id: 89, name: 'Peas', icon: '🫛', color: 'bg-green-100' },
+      { id: 90, name: 'Okra', icon: '🥬', color: 'bg-green-100' },
+      { id: 91, name: 'Bitter Gourd', icon: '🥒', color: 'bg-green-100' },
+      { id: 92, name: 'Bottle Gourd', icon: '🥒', color: 'bg-green-100' },
+      { id: 93, name: 'Ridge Gourd', icon: '🥒', color: 'bg-green-100' },
+      { id: 94, name: 'Snake Gourd', icon: '🥒', color: 'bg-green-100' },
+      { id: 95, name: 'Yam', icon: '🍠', color: 'bg-brown-100' },
+      { id: 96, name: 'Taro', icon: '🍠', color: 'bg-brown-100' },
+      { id: 97, name: 'Ginger', icon: '🧄', color: 'bg-brown-100' },
+      { id: 98, name: 'Turmeric', icon: '🧄', color: 'bg-orange-100' },
+      { id: 99, name: 'Spring Onion', icon: '🧅', color: 'bg-green-100' },
+      { id: 100, name: 'Leek', icon: '🧅', color: 'bg-green-100' },
+      { id: 101, name: 'Shallot', icon: '🧅', color: 'bg-purple-100' },
+      { id: 102, name: 'Fennel', icon: '🥬', color: 'bg-green-100' },
+      { id: 103, name: 'Endive', icon: '🥬', color: 'bg-green-100' },
+      { id: 104, name: 'Arugula', icon: '🥬', color: 'bg-green-100' },
+      { id: 105, name: 'Chicory', icon: '🥬', color: 'bg-green-100' },
+      { id: 106, name: 'Watercress', icon: '🥬', color: 'bg-green-100' },
+      { id: 107, name: 'Bok Choy', icon: '🥬', color: 'bg-green-100' },
+      { id: 108, name: 'Napa Cabbage', icon: '🥬', color: 'bg-green-100' },
+      { id: 109, name: 'Collard Greens', icon: '🥬', color: 'bg-green-100' },
+      { id: 110, name: 'Swiss Chard', icon: '🥬', color: 'bg-green-100' }
     ]
   },
   {
@@ -513,6 +590,742 @@ const Home: FC = () => {
         'Rich in minerals',
         'Good for diabetics',
         'Improves digestive health'
+      ]
+    },
+    {
+      id: 34,
+      name: 'Pear',
+      icon: '🍐',
+      color: 'bg-green-100',
+      description: 'Sweet and juicy pears are rich in fiber and antioxidants.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Copper', 'Fiber'],
+      diseases: ['Fire Blight', 'Pear Scab', 'Pear Rust'],
+      cultivation: 'Pears need well-drained soil and full sun. They require cross-pollination and regular pruning.',
+      benefits: [
+        'Improves digestion',
+        'Supports heart health',
+        'Boosts immune system',
+        'Good for skin health'
+      ]
+    },
+    {
+      id: 35,
+      name: 'Kiwi',
+      icon: '🥝',
+      color: 'bg-green-100',
+      description: 'Tart and sweet kiwi is packed with vitamin C and fiber.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Vitamin E', 'Folate'],
+      diseases: ['Bacterial Canker', 'Root Rot', 'Phytophthora Crown Rot'],
+      cultivation: 'Kiwi vines need strong support, well-drained soil, and protection from strong winds.',
+      benefits: [
+        'Boosts immunity',
+        'Improves digestion',
+        'Supports heart health',
+        'Good for skin health'
+      ]
+    },
+    {
+      id: 36,
+      name: 'Cherry',
+      icon: '🍒',
+      color: 'bg-red-100',
+      description: 'Sweet and tart cherries are rich in antioxidants and anti-inflammatory compounds.',
+      vitamins: ['Vitamin C', 'Potassium', 'Fiber', 'Antioxidants'],
+      diseases: ['Brown Rot', 'Cherry Leaf Spot', 'Powdery Mildew'],
+      cultivation: 'Cherries need well-drained soil, full sun, and protection from birds. Regular pruning is essential.',
+      benefits: [
+        'Reduces inflammation',
+        'Improves sleep quality',
+        'Supports heart health',
+        'Rich in antioxidants'
+      ]
+    },
+    {
+      id: 37,
+      name: 'Blueberry',
+      icon: '🫐',
+      color: 'bg-blue-100',
+      description: 'Sweet and tangy blueberries are packed with antioxidants and nutrients.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Manganese', 'Fiber'],
+      diseases: ['Mummy Berry', 'Botrytis Blight', 'Anthracnose'],
+      cultivation: 'Blueberries need acidic soil, full sun, and regular watering. Mulching helps maintain soil moisture.',
+      benefits: [
+        'Rich in antioxidants',
+        'Improves brain function',
+        'Supports heart health',
+        'Good for eye health'
+      ]
+    },
+    {
+      id: 71,
+      name: 'Broccoli',
+      icon: '🥦',
+      color: 'bg-green-100',
+      description: 'Nutrient-rich broccoli is a cruciferous vegetable with numerous health benefits.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Folate', 'Fiber'],
+      diseases: ['Downy Mildew', 'Clubroot', 'Black Rot'],
+      cultivation: 'Broccoli needs fertile soil, full sun, and consistent moisture. Regular fertilization is important.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports bone health',
+        'Boosts immune system',
+        'Good for digestion'
+      ]
+    },
+    {
+      id: 72,
+      name: 'Cauliflower',
+      icon: '🥦',
+      color: 'bg-white',
+      description: 'Versatile cauliflower is rich in nutrients and can be used in various dishes.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Folate', 'Fiber'],
+      diseases: ['Downy Mildew', 'Black Rot', 'Clubroot'],
+      cultivation: 'Cauliflower needs fertile soil, full sun, and consistent moisture. Blanching is important for white varieties.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports heart health',
+        'Good for digestion',
+        'Low in calories'
+      ]
+    },
+    {
+      id: 73,
+      name: 'Cabbage',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Nutritious cabbage is a staple in many cuisines and rich in vitamins.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Folate', 'Fiber'],
+      diseases: ['Black Rot', 'Clubroot', 'Downy Mildew'],
+      cultivation: 'Cabbage needs fertile soil, full sun, and consistent moisture. Regular watering is essential.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports digestion',
+        'Boosts immune system',
+        'Good for heart health'
+      ]
+    },
+    {
+      id: 38,
+      name: 'Raspberry',
+      icon: '🍇',
+      color: 'bg-red-100',
+      description: 'Sweet and tart raspberries are rich in antioxidants and fiber.',
+      vitamins: ['Vitamin C', 'Manganese', 'Fiber', 'Antioxidants'],
+      diseases: ['Gray Mold', 'Root Rot', 'Spur Blight'],
+      cultivation: 'Raspberries need well-drained soil, full sun, and support structures. Regular pruning is essential.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports heart health',
+        'Improves digestion',
+        'Good for skin health'
+      ]
+    },
+    {
+      id: 39,
+      name: 'Blackberry',
+      icon: '🍇',
+      color: 'bg-purple-100',
+      description: 'Sweet and juicy blackberries are packed with vitamins and antioxidants.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Manganese', 'Fiber'],
+      diseases: ['Orange Rust', 'Anthracnose', 'Cane Blight'],
+      cultivation: 'Blackberries need well-drained soil, full sun, and support structures. Regular pruning is important.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports brain health',
+        'Improves digestion',
+        'Good for heart health'
+      ]
+    },
+    {
+      id: 40,
+      name: 'Apricot',
+      icon: '🍑',
+      color: 'bg-orange-100',
+      description: 'Sweet and aromatic apricots are rich in vitamins and minerals.',
+      vitamins: ['Vitamin A', 'Vitamin C', 'Potassium', 'Fiber'],
+      diseases: ['Brown Rot', 'Shot Hole Disease', 'Powdery Mildew'],
+      cultivation: 'Apricots need well-drained soil, full sun, and protection from late frosts. Regular pruning is essential.',
+      benefits: [
+        'Good for eye health',
+        'Supports skin health',
+        'Improves digestion',
+        'Rich in antioxidants'
+      ]
+    },
+    {
+      id: 41,
+      name: 'Plum',
+      icon: '🍑',
+      color: 'bg-purple-100',
+      description: 'Sweet and juicy plums are rich in antioxidants and fiber.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Potassium', 'Fiber'],
+      diseases: ['Brown Rot', 'Plum Pox', 'Black Knot'],
+      cultivation: 'Plums need well-drained soil, full sun, and regular pruning. Cross-pollination may be required.',
+      benefits: [
+        'Improves digestion',
+        'Supports heart health',
+        'Rich in antioxidants',
+        'Good for bone health'
+      ]
+    },
+    {
+      id: 42,
+      name: 'Guava',
+      icon: '🥭',
+      color: 'bg-green-100',
+      description: 'Tropical guava is rich in vitamin C and dietary fiber.',
+      vitamins: ['Vitamin C', 'Vitamin A', 'Fiber', 'Potassium'],
+      diseases: ['Anthracnose', 'Fruit Rot', 'Wilt'],
+      cultivation: 'Guava needs well-drained soil, full sun, and protection from frost. Regular pruning is important.',
+      benefits: [
+        'Boosts immunity',
+        'Improves digestion',
+        'Good for heart health',
+        'Supports skin health'
+      ]
+    },
+    {
+      id: 43,
+      name: 'Pomegranate',
+      icon: '🍎',
+      color: 'bg-red-100',
+      description: 'Juicy pomegranate seeds are packed with antioxidants and nutrients.',
+      vitamins: ['Vitamin C', 'Vitamin K', 'Folate', 'Potassium'],
+      diseases: ['Fruit Rot', 'Bacterial Blight', 'Alternaria Blight'],
+      cultivation: 'Pomegranates need well-drained soil, full sun, and protection from frost. Regular pruning is essential.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports heart health',
+        'Anti-inflammatory',
+        'Good for digestion'
+      ]
+    },
+    {
+      id: 74,
+      name: 'Spinach',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Nutrient-dense spinach is rich in iron and vitamins.',
+      vitamins: ['Vitamin K', 'Vitamin A', 'Iron', 'Folate'],
+      diseases: ['Downy Mildew', 'White Rust', 'Fusarium Wilt'],
+      cultivation: 'Spinach needs fertile soil, partial shade, and consistent moisture. Regular harvesting promotes growth.',
+      benefits: [
+        'Rich in iron',
+        'Supports bone health',
+        'Good for eye health',
+        'Boosts immune system'
+      ]
+    },
+    {
+      id: 75,
+      name: 'Lettuce',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Crisp and refreshing lettuce is a staple in salads and sandwiches.',
+      vitamins: ['Vitamin K', 'Vitamin A', 'Folate', 'Iron'],
+      diseases: ['Downy Mildew', 'Bottom Rot', 'Tip Burn'],
+      cultivation: 'Lettuce needs fertile soil, partial shade, and consistent moisture. Regular watering is essential.',
+      benefits: [
+        'Low in calories',
+        'Good for hydration',
+        'Supports bone health',
+        'Rich in vitamins'
+      ]
+    },
+    {
+      id: 76,
+      name: 'Kale',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Nutrient-packed kale is one of the most nutritious leafy greens.',
+      vitamins: ['Vitamin K', 'Vitamin A', 'Vitamin C', 'Calcium'],
+      diseases: ['Black Rot', 'Downy Mildew', 'Alternaria Leaf Spot'],
+      cultivation: 'Kale needs fertile soil, full sun to partial shade, and regular watering. Frost improves flavor.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports bone health',
+        'Good for heart health',
+        'Boosts immune system'
+      ]
+    },
+    {
+      id: 77,
+      name: 'Zucchini',
+      icon: '🥒',
+      color: 'bg-green-100',
+      description: 'Mild and versatile zucchini is a summer squash rich in nutrients.',
+      vitamins: ['Vitamin C', 'Vitamin A', 'Potassium', 'Fiber'],
+      diseases: ['Powdery Mildew', 'Bacterial Wilt', 'Squash Vine Borer'],
+      cultivation: 'Zucchini needs fertile soil, full sun, and regular watering. Regular harvesting promotes production.',
+      benefits: [
+        'Low in calories',
+        'Good for heart health',
+        'Improves digestion',
+        'Rich in antioxidants'
+      ]
+    },
+    {
+      id: 78,
+      name: 'Pumpkin',
+      icon: '🎃',
+      color: 'bg-orange-100',
+      description: 'Sweet and nutritious pumpkin is rich in vitamins and fiber.',
+      vitamins: ['Vitamin A', 'Vitamin C', 'Potassium', 'Fiber'],
+      diseases: ['Powdery Mildew', 'Downy Mildew', 'Fusarium Wilt'],
+      cultivation: 'Pumpkins need fertile soil, full sun, and plenty of space. Regular watering is essential.',
+      benefits: [
+        'Good for eye health',
+        'Supports immune system',
+        'Improves digestion',
+        'Rich in antioxidants'
+      ]
+    },
+    {
+      id: 79,
+      name: 'Sweet Potato',
+      icon: '🍠',
+      color: 'bg-orange-100',
+      description: 'Nutritious sweet potatoes are rich in beta-carotene and fiber.',
+      vitamins: ['Vitamin A', 'Vitamin C', 'Potassium', 'Fiber'],
+      diseases: ['Black Rot', 'Fusarium Wilt', 'Root Knot Nematode'],
+      cultivation: 'Sweet potatoes need loose, well-drained soil and warm temperatures. Regular watering is important.',
+      benefits: [
+        'Good for eye health',
+        'Supports immune system',
+        'Improves digestion',
+        'Rich in antioxidants'
+      ]
+    },
+    {
+      id: 44,
+      name: 'Papaya',
+      icon: '🥭',
+      color: 'bg-orange-100',
+      description: 'Sweet and tropical papaya is rich in digestive enzymes and vitamins.',
+      vitamins: ['Vitamin C', 'Vitamin A', 'Folate', 'Potassium'],
+      diseases: ['Papaya Ringspot Virus', 'Anthracnose', 'Powdery Mildew'],
+      cultivation: 'Papaya needs well-drained soil, full sun, and protection from wind. Regular watering is essential.',
+      benefits: [
+        'Aids digestion',
+        'Boosts immunity',
+        'Good for skin health',
+        'Rich in antioxidants'
+      ]
+    },
+    {
+      id: 45,
+      name: 'Lychee',
+      icon: '🍇',
+      color: 'bg-red-100',
+      description: 'Sweet and fragrant lychee is rich in vitamin C and antioxidants.',
+      vitamins: ['Vitamin C', 'Copper', 'Potassium', 'Fiber'],
+      diseases: ['Anthracnose', 'Fruit Rot', 'Dieback'],
+      cultivation: 'Lychee needs well-drained soil, full sun, and protection from frost. Regular pruning is important.',
+      benefits: [
+        'Boosts immunity',
+        'Supports heart health',
+        'Rich in antioxidants',
+        'Good for skin health'
+      ]
+    },
+    {
+      id: 46,
+      name: 'Dragon Fruit',
+      icon: '🥭',
+      color: 'bg-pink-100',
+      description: 'Exotic dragon fruit is rich in antioxidants and fiber.',
+      vitamins: ['Vitamin C', 'Iron', 'Magnesium', 'Fiber'],
+      diseases: ['Stem Rot', 'Anthracnose', 'Fruit Rot'],
+      cultivation: 'Dragon fruit needs well-drained soil, full sun, and support structures. Regular pruning is essential.',
+      benefits: [
+        'Rich in antioxidants',
+        'Improves digestion',
+        'Supports immune system',
+        'Good for heart health'
+      ]
+    },
+    {
+      id: 80,
+      name: 'Beetroot',
+      icon: '🥕',
+      color: 'bg-red-100',
+      description: 'Nutritious beetroot is rich in nitrates and antioxidants.',
+      vitamins: ['Folate', 'Manganese', 'Potassium', 'Iron'],
+      diseases: ['Cercospora Leaf Spot', 'Downy Mildew', 'Root Rot'],
+      cultivation: 'Beetroot needs loose, well-drained soil and full sun. Regular thinning is important.',
+      benefits: [
+        'Supports heart health',
+        'Improves blood pressure',
+        'Rich in antioxidants',
+        'Good for digestion'
+      ]
+    },
+    {
+      id: 81,
+      name: 'Radish',
+      icon: '🥕',
+      color: 'bg-red-100',
+      description: 'Crisp and peppery radishes are rich in vitamin C and fiber.',
+      vitamins: ['Vitamin C', 'Potassium', 'Folate', 'Fiber'],
+      diseases: ['Black Root', 'Downy Mildew', 'Clubroot'],
+      cultivation: 'Radishes need loose, well-drained soil and full sun. Regular watering is essential.',
+      benefits: [
+        'Supports digestion',
+        'Boosts immunity',
+        'Good for heart health',
+        'Low in calories'
+      ]
+    },
+    {
+      id: 82,
+      name: 'Turnip',
+      icon: '🥕',
+      color: 'bg-white',
+      description: 'Mild and nutritious turnips are rich in vitamins and minerals.',
+      vitamins: ['Vitamin C', 'Fiber', 'Potassium', 'Calcium'],
+      diseases: ['Clubroot', 'Downy Mildew', 'Black Rot'],
+      cultivation: 'Turnips need fertile, well-drained soil and full sun. Regular watering is important.',
+      benefits: [
+        'Supports bone health',
+        'Improves digestion',
+        'Good for heart health',
+        'Rich in nutrients'
+      ]
+    },
+    {
+      id: 83,
+      name: 'Parsnip',
+      icon: '🥕',
+      color: 'bg-white',
+      description: 'Sweet and nutty parsnips are rich in fiber and vitamins.',
+      vitamins: ['Vitamin C', 'Folate', 'Potassium', 'Fiber'],
+      diseases: ['Canker', 'Leaf Spot', 'Root Rot'],
+      cultivation: 'Parsnips need deep, well-drained soil and full sun. Frost improves sweetness.',
+      benefits: [
+        'Supports digestion',
+        'Good for heart health',
+        'Rich in fiber',
+        'Boosts immunity'
+      ]
+    },
+    {
+      id: 84,
+      name: 'Celery',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Crisp and refreshing celery is rich in vitamins and minerals.',
+      vitamins: ['Vitamin K', 'Vitamin A', 'Potassium', 'Folate'],
+      diseases: ['Early Blight', 'Late Blight', 'Fusarium Wilt'],
+      cultivation: 'Celery needs rich, moist soil and full sun. Regular watering is essential.',
+      benefits: [
+        'Supports hydration',
+        'Good for digestion',
+        'Rich in antioxidants',
+        'Low in calories'
+      ]
+    },
+    {
+      id: 85,
+      name: 'Asparagus',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Nutritious asparagus is rich in vitamins and antioxidants.',
+      vitamins: ['Vitamin K', 'Folate', 'Vitamin A', 'Fiber'],
+      diseases: ['Fusarium Crown Rot', 'Rust', 'Purple Spot'],
+      cultivation: 'Asparagus needs well-drained soil, full sun, and patience. Regular weeding is important.',
+      benefits: [
+        'Supports digestion',
+        'Good for heart health',
+        'Rich in antioxidants',
+        'Boosts immunity'
+      ]
+    },
+    {
+      id: 47,
+      name: 'Passion Fruit',
+      icon: '🍇',
+      color: 'bg-purple-100',
+      description: 'Tropical passion fruit is rich in antioxidants and fiber.',
+      vitamins: ['Vitamin C', 'Vitamin A', 'Iron', 'Potassium'],
+      diseases: ['Fusarium Wilt', 'Woodiness Virus', 'Brown Spot'],
+      cultivation: 'Passion fruit needs well-drained soil, full sun, and support structures. Regular pruning is essential.',
+      benefits: [
+        'Rich in antioxidants',
+        'Improves digestion',
+        'Supports heart health',
+        'Good for skin health'
+      ]
+    },
+    {
+      id: 48,
+      name: 'Jackfruit',
+      icon: '🥭',
+      color: 'bg-yellow-100',
+      description: 'Large and sweet jackfruit is rich in nutrients and fiber.',
+      vitamins: ['Vitamin C', 'Potassium', 'Magnesium', 'Fiber'],
+      diseases: ['Fruit Rot', 'Dieback', 'Leaf Spot'],
+      cultivation: 'Jackfruit needs well-drained soil, full sun, and protection from wind. Regular pruning is important.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports digestion',
+        'Good for heart health',
+        'Boosts immunity'
+      ]
+    },
+    {
+      id: 49,
+      name: 'Custard Apple',
+      icon: '🍎',
+      color: 'bg-green-100',
+      description: 'Sweet and creamy custard apple is rich in vitamins and minerals.',
+      vitamins: ['Vitamin C', 'Potassium', 'Magnesium', 'Fiber'],
+      diseases: ['Anthracnose', 'Fruit Rot', 'Dieback'],
+      cultivation: 'Custard apple needs well-drained soil, full sun, and protection from frost. Regular pruning is essential.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports heart health',
+        'Good for digestion',
+        'Boosts immunity'
+      ]
+    },
+    {
+      id: 50,
+      name: 'Star Fruit',
+      icon: '⭐',
+      color: 'bg-yellow-100',
+      description: 'Sweet and tangy star fruit is rich in vitamin C and antioxidants.',
+      vitamins: ['Vitamin C', 'Fiber', 'Potassium', 'Antioxidants'],
+      diseases: ['Anthracnose', 'Fruit Rot', 'Leaf Spot'],
+      cultivation: 'Star fruit needs well-drained soil, full sun, and protection from wind. Regular pruning is important.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports digestion',
+        'Good for heart health',
+        'Boosts immunity'
+      ]
+    },
+    {
+      id: 51,
+      name: 'Persimmon',
+      icon: '🍎',
+      color: 'bg-orange-100',
+      description: 'Sweet and flavorful persimmon is rich in vitamins and fiber.',
+      vitamins: ['Vitamin A', 'Vitamin C', 'Manganese', 'Fiber'],
+      diseases: ['Anthracnose', 'Leaf Spot', 'Fruit Rot'],
+      cultivation: 'Persimmons need well-drained soil, full sun, and protection from frost. Regular pruning is essential.',
+      benefits: [
+        'Good for eye health',
+        'Supports heart health',
+        'Rich in antioxidants',
+        'Improves digestion'
+      ]
+    },
+    {
+      id: 52,
+      name: 'Fig',
+      icon: '🍇',
+      color: 'bg-purple-100',
+      description: 'Sweet and nutritious figs are rich in fiber and minerals.',
+      vitamins: ['Vitamin K', 'Potassium', 'Calcium', 'Fiber'],
+      diseases: ['Fig Rust', 'Fruit Rot', 'Leaf Spot'],
+      cultivation: 'Figs need well-drained soil, full sun, and protection from frost. Regular pruning is important.',
+      benefits: [
+        'Improves digestion',
+        'Supports bone health',
+        'Good for heart health',
+        'Rich in fiber'
+      ]
+    },
+    {
+      id: 86,
+      name: 'Artichoke',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Nutritious artichokes are rich in fiber and antioxidants.',
+      vitamins: ['Vitamin C', 'Folate', 'Magnesium', 'Fiber'],
+      diseases: ['Botrytis Rot', 'Powdery Mildew', 'Verticillium Wilt'],
+      cultivation: 'Artichokes need fertile soil, full sun, and regular watering. Protection from frost is important.',
+      benefits: [
+        'Supports liver health',
+        'Improves digestion',
+        'Rich in antioxidants',
+        'Good for heart health'
+      ]
+    },
+    {
+      id: 87,
+      name: 'Brussels Sprouts',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Nutritious Brussels sprouts are rich in vitamins and fiber.',
+      vitamins: ['Vitamin K', 'Vitamin C', 'Folate', 'Fiber'],
+      diseases: ['Black Rot', 'Downy Mildew', 'Clubroot'],
+      cultivation: 'Brussels sprouts need fertile soil, full sun, and consistent moisture. Frost improves flavor.',
+      benefits: [
+        'Rich in antioxidants',
+        'Supports bone health',
+        'Good for heart health',
+        'Boosts immune system'
+      ]
+    },
+    {
+      id: 88,
+      name: 'Green Beans',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Crisp and nutritious green beans are rich in vitamins and fiber.',
+      vitamins: ['Vitamin K', 'Vitamin C', 'Folate', 'Fiber'],
+      diseases: ['Anthracnose', 'Bacterial Blight', 'Rust'],
+      cultivation: 'Green beans need well-drained soil, full sun, and support structures. Regular harvesting is important.',
+      benefits: [
+        'Supports bone health',
+        'Good for heart health',
+        'Rich in fiber',
+        'Low in calories'
+      ]
+    },
+    {
+      id: 53,
+      name: 'Date',
+      icon: '🍇',
+      color: 'bg-brown-100',
+      description: 'Sweet and nutritious dates are rich in fiber and minerals.',
+      vitamins: ['Potassium', 'Magnesium', 'Copper', 'Fiber'],
+      diseases: ['Bayoud Disease', 'Fruit Rot', 'Leaf Spot'],
+      cultivation: 'Dates need well-drained soil, full sun, and hot climate. Regular pruning is essential.',
+      benefits: [
+        'Natural energy source',
+        'Supports digestion',
+        'Good for bone health',
+        'Rich in antioxidants'
+      ]
+    },
+    {
+      id: 54,
+      name: 'Coconut',
+      icon: '🥥',
+      color: 'bg-brown-100',
+      description: 'Versatile coconut is rich in healthy fats and minerals.',
+      vitamins: ['Manganese', 'Copper', 'Iron', 'Fiber'],
+      diseases: ['Bud Rot', 'Leaf Spot', 'Fruit Rot'],
+      cultivation: 'Coconuts need sandy soil, full sun, and tropical climate. Regular watering is important.',
+      benefits: [
+        'Supports heart health',
+        'Good for hydration',
+        'Rich in healthy fats',
+        'Boosts immunity'
+      ]
+    },
+    {
+      id: 55,
+      name: 'Avocado',
+      icon: '🥑',
+      color: 'bg-green-100',
+      description: 'Creamy and nutritious avocado is rich in healthy fats and vitamins.',
+      vitamins: ['Vitamin K', 'Folate', 'Potassium', 'Healthy Fats'],
+      diseases: ['Root Rot', 'Anthracnose', 'Scab'],
+      cultivation: 'Avocados need well-drained soil, full sun, and protection from frost. Regular pruning is important.',
+      benefits: [
+        'Rich in healthy fats',
+        'Supports heart health',
+        'Good for skin health',
+        'Improves digestion'
+      ]
+    },
+    {
+      id: 89,
+      name: 'Peas',
+      icon: '🫛',
+      color: 'bg-green-100',
+      description: 'Sweet and nutritious peas are rich in protein and fiber.',
+      vitamins: ['Vitamin K', 'Vitamin C', 'Folate', 'Protein'],
+      diseases: ['Powdery Mildew', 'Fusarium Wilt', 'Root Rot'],
+      cultivation: 'Peas need well-drained soil, full sun, and support structures. Regular watering is essential.',
+      benefits: [
+        'Rich in protein',
+        'Supports bone health',
+        'Good for heart health',
+        'Improves digestion'
+      ]
+    },
+    {
+      id: 90,
+      name: 'Okra',
+      icon: '🥬',
+      color: 'bg-green-100',
+      description: 'Nutritious okra is rich in fiber and vitamins.',
+      vitamins: ['Vitamin K', 'Vitamin C', 'Folate', 'Fiber'],
+      diseases: ['Fusarium Wilt', 'Powdery Mildew', 'Yellow Vein Mosaic'],
+      cultivation: 'Okra needs well-drained soil, full sun, and warm temperatures. Regular harvesting is important.',
+      benefits: [
+        'Supports digestion',
+        'Good for heart health',
+        'Rich in antioxidants',
+        'Boosts immunity'
+      ]
+    },
+    {
+      id: 91,
+      name: 'Bitter Gourd',
+      icon: '🥒',
+      color: 'bg-green-100',
+      description: 'Nutritious bitter gourd is known for its medicinal properties.',
+      vitamins: ['Vitamin C', 'Vitamin A', 'Folate', 'Fiber'],
+      diseases: ['Powdery Mildew', 'Fruit Fly', 'Downy Mildew'],
+      cultivation: 'Bitter gourd needs well-drained soil, full sun, and support structures. Regular watering is essential.',
+      benefits: [
+        'Helps control blood sugar',
+        'Rich in antioxidants',
+        'Supports digestion',
+        'Good for skin health'
+      ]
+    },
+    {
+      id: 92,
+      name: 'Bottle Gourd',
+      icon: '🥒',
+      color: 'bg-green-100',
+      description: 'Mild and nutritious bottle gourd is rich in water and fiber.',
+      vitamins: ['Vitamin C', 'Calcium', 'Iron', 'Fiber'],
+      diseases: ['Powdery Mildew', 'Fruit Fly', 'Downy Mildew'],
+      cultivation: 'Bottle gourd needs well-drained soil, full sun, and support structures. Regular watering is essential.',
+      benefits: [
+        'Good for hydration',
+        'Supports digestion',
+        'Low in calories',
+        'Rich in nutrients'
+      ]
+    },
+    {
+      id: 93,
+      name: 'Ridge Gourd',
+      icon: '🥒',
+      color: 'bg-green-100',
+      description: 'Nutritious ridge gourd is rich in fiber and vitamins.',
+      vitamins: ['Vitamin C', 'Iron', 'Calcium', 'Fiber'],
+      diseases: ['Powdery Mildew', 'Fruit Fly', 'Downy Mildew'],
+      cultivation: 'Ridge gourd needs well-drained soil, full sun, and support structures. Regular watering is important.',
+      benefits: [
+        'Supports digestion',
+        'Good for heart health',
+        'Rich in fiber',
+        'Low in calories'
+      ]
+    },
+    {
+      id: 94,
+      name: 'Snake Gourd',
+      icon: '🥒',
+      color: 'bg-green-100',
+      description: 'Nutritious snake gourd is rich in water and fiber.',
+      vitamins: ['Vitamin C', 'Calcium', 'Iron', 'Fiber'],
+      diseases: ['Powdery Mildew', 'Fruit Fly', 'Downy Mildew'],
+      cultivation: 'Snake gourd needs well-drained soil, full sun, and support structures. Regular watering is essential.',
+      benefits: [
+        'Good for hydration',
+        'Supports digestion',
+        'Low in calories',
+        'Rich in nutrients'
       ]
     }
   ];
