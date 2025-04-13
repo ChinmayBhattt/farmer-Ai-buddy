@@ -393,99 +393,6 @@ const allCategories: Category[] = [
   }
 ];
 
-const problems: Problem[] = [
-  {
-    id: 101,
-    name: "Global Warming",
-    category: 1,
-    icon: "🌡️",
-    description: "Rising global temperatures due to greenhouse gases",
-    impact: ["Sea level rise", "Extreme weather", "Ecosystem disruption"],
-    solutions: ["Renewable energy", "Carbon reduction", "Energy efficiency"]
-  },
-  {
-    id: 102,
-    name: "Air Pollution",
-    category: 1,
-    icon: "🏭",
-    description: "Contamination of air by harmful substances",
-    impact: ["Health issues", "Environmental damage", "Climate change"],
-    solutions: ["Clean energy", "Emission controls", "Public transport"]
-  },
-  {
-    id: 103,
-    name: "Glacial Melting",
-    icon: "❄️",
-    category: 1,
-    description: "Rapid melting of glaciers and ice sheets worldwide",
-    impact: ["Sea level rise", "Water scarcity", "Ecosystem disruption"],
-    solutions: ["Reduce emissions", "Protect ice habitats", "Monitor glacier health"]
-  },
-  {
-    id: 104,
-    name: "Extreme Weather Events",
-    icon: "🌪️",
-    category: 1,
-    description: "Increased frequency and intensity of extreme weather phenomena",
-    impact: ["Infrastructure damage", "Loss of life", "Economic disruption"],
-    solutions: ["Early warning systems", "Climate resilient infrastructure", "Disaster preparedness"]
-  },
-  {
-    id: 105,
-    name: "Ocean Acidification",
-    icon: "🌊",
-    category: 2,
-    description: "Decreasing pH levels in oceans due to CO2 absorption",
-    impact: ["Marine ecosystem damage", "Coral reef death", "Fish population decline"],
-    solutions: ["Reduce CO2 emissions", "Marine protected areas", "Sustainable fishing"]
-  },
-  {
-    id: 106,
-    name: "Deforestation",
-    icon: "🌳",
-    category: 3,
-    description: "Large-scale forest loss and degradation",
-    impact: ["Biodiversity loss", "Carbon emissions", "Soil erosion"],
-    solutions: ["Sustainable forestry", "Protected areas", "Reforestation programs"]
-  },
-  {
-    id: 107,
-    name: "Soil Degradation",
-    icon: "🌱",
-    category: 3,
-    description: "Loss of soil quality and fertility",
-    impact: ["Food insecurity", "Reduced crop yields", "Ecosystem damage"],
-    solutions: ["Sustainable agriculture", "Soil conservation", "Crop rotation"]
-  },
-  {
-    id: 108,
-    name: "Species Extinction",
-    icon: "🐾",
-    category: 4,
-    description: "Accelerated loss of plant and animal species",
-    impact: ["Ecosystem collapse", "Loss of biodiversity", "Food chain disruption"],
-    solutions: ["Habitat protection", "Conservation programs", "Anti-poaching measures"]
-  },
-  {
-    id: 109,
-    name: "Habitat Loss",
-    icon: "🏗️",
-    category: 4,
-    description: "Destruction of natural habitats due to human activities",
-    impact: ["Wildlife displacement", "Biodiversity reduction", "Ecosystem imbalance"],
-    solutions: ["Protected areas", "Sustainable development", "Habitat restoration"]
-  },
-  {
-    id: 110,
-    name: "Plastic Pollution",
-    icon: "🗑️",
-    category: 2,
-    description: "Accumulation of plastic waste in ecosystems",
-    impact: ["Marine life harm", "Food chain contamination", "Ecosystem damage"],
-    solutions: ["Reduce plastic use", "Recycling programs", "Ocean cleanup"]
-  }
-];
-
 const GlobalProblems: React.FC = () => {
   const [selectedProblems, setSelectedProblems] = useState<Problem[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -534,7 +441,7 @@ const GlobalProblems: React.FC = () => {
             </motion.button>
           ))}
           <button
-            onClick={() => setShowModal(true)}
+            onClick={handlePlusClick}
             className="flex-shrink-0 w-14 h-14 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center text-white text-3xl hover:shadow-md transition-all"
           >
             +
