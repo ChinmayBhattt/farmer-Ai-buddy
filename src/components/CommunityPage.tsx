@@ -241,6 +241,7 @@ const CommunityPage: React.FC = () => {
                 </div>
               )}
             </>
+
           )}
 
           {/* Show error state only if both templates and news failed */}

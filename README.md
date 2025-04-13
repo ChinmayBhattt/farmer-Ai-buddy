@@ -1,6 +1,7 @@
 # FarmAI
 
 Smart Farmer Buddy is an AI-powered full-stack web application designed to assist Indian farmers with real-time agricultural advice. It provides personalized recommendations using AI and IoT technologies and works even in low-connectivity areas with offline support and multilingual voice commands.
+
 ## Features
 
 - 📸 Plant Disease Diagnosis with ML
