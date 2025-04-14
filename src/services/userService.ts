@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 
 export interface UserData {
@@ -6,8 +6,8 @@ export interface UserData {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  createdAt: Date;
-  lastLogin: Date;
+  createdAt: Timestamp;
+  lastLogin: Timestamp;
   phoneNumber?: string;
   address?: string;
   preferences?: {
@@ -26,8 +26,8 @@ export const createOrUpdateUser = async (userData: Partial<UserData>) => {
     // Create new user
     await setDoc(userRef, {
       ...userData,
-      createdAt: new Date(),
-      lastLogin: new Date(),
+      createdAt: Timestamp.now(),
+      lastLogin: Timestamp.now(),
       preferences: {
         notifications: true,
         language: 'en'
@@ -37,7 +37,7 @@ export const createOrUpdateUser = async (userData: Partial<UserData>) => {
     // Update existing user
     await updateDoc(userRef, {
       ...userData,
-      lastLogin: new Date()
+      lastLogin: Timestamp.now()
     });
   }
 };
