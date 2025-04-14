@@ -1,23 +1,47 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { auth } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { signOut } from 'firebase/auth';
 import { Auth } from '../components/Auth';
+import { getUserData, UserData } from '../services/userService';
 
 const Profile: FC = () => {
   const [user, loading] = useAuthState(auth);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loadingUserData, setLoadingUserData] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        setLoadingUserData(true);
+        try {
+          const data = await getUserData(user.uid);
+          setUserData(data);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        } finally {
+          setLoadingUserData(false);
+        }
+      } else {
+        setUserData(null);
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      setUserData(null);
     } catch (error) {
       console.error('Error signing out:', error);
     }
   };
 
-  if (loading) {
+  if (loading || loadingUserData) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600"></div>
@@ -32,27 +56,49 @@ const Profile: FC = () => {
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
             {user?.photoURL ? (
-              <img src={user.photoURL} alt="Profile" className="w-14 h-14 rounded-lg" />
+              <img src={user.photoURL} alt="Profile" className="w-14 h-14 rounded-lg object-cover" />
             ) : (
               <span className="text-2xl">👤</span>
             )}
           </div>
-          <div>
+          <div className="flex-1">
             <h2 className="text-xl font-semibold">
               {user ? user.displayName || user.email : 'Your account'}
             </h2>
             <p className="text-gray-600">
               {user ? 'Welcome to Plantix Community' : 'Join Plantix Community'}
             </p>
+            {userData && (
+              <p className="text-sm text-gray-500 mt-1">
+                Member since {new Date(userData.createdAt.seconds * 1000).toLocaleDateString()}
+              </p>
+            )}
           </div>
         </div>
         {user ? (
-          <button
-            onClick={handleSignOut}
-            className="w-full mt-4 border-2 border-red-600 text-red-600 rounded-lg py-2 font-medium hover:bg-red-50"
-          >
-            Sign out
-          </button>
+          <div className="space-y-4 mt-4">
+            {userData?.preferences && (
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <h3 className="font-medium mb-2">Preferences</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span>Notifications</span>
+                    <span>{userData.preferences.notifications ? 'Enabled' : 'Disabled'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Language</span>
+                    <span className="capitalize">{userData.preferences.language}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <button
+              onClick={handleSignOut}
+              className="w-full border-2 border-red-600 text-red-600 rounded-lg py-2 font-medium hover:bg-red-50"
+            >
+              Sign out
+            </button>
+          </div>
         ) : (
           <button
             onClick={() => setShowAuthModal(true)}

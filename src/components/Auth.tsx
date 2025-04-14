@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, googleProvider } from '../firebase';
 import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { createOrUpdateUser } from '../services/userService';
 
 interface AuthProps {
   onSuccess?: () => void;
@@ -12,28 +13,47 @@ export const Auth = ({ onSuccess }: AuthProps) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAuthSuccess = async (user: any) => {
-    // Send email verification for new email/password accounts
-    if (!user.emailVerified && user.providerData[0].providerId === 'password') {
-      await sendEmailVerification(user);
+    try {
+      // Save user data to Firestore
+      await createOrUpdateUser({
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      });
+
+      // Send email verification for new email/password accounts
+      if (!user.emailVerified && user.providerData[0].providerId === 'password') {
+        await sendEmailVerification(user);
+      }
+      
+      onSuccess?.();
+      navigate('/');
+    } catch (error) {
+      console.error('Error saving user data:', error);
+      setError('Failed to save user data');
     }
-    onSuccess?.();
-    navigate('/');
   };
 
   const signInWithGoogle = async () => {
+    setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       await handleAuthSuccess(result.user);
     } catch (err) {
       setError('Failed to sign in with Google');
+    } finally {
+      setLoading(false);
     }
   };
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       await handleAuthSuccess(result.user);
@@ -43,11 +63,14 @@ export const Auth = ({ onSuccess }: AuthProps) => {
       } else {
         setError('Failed to sign in');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       await handleAuthSuccess(result.user);
@@ -59,6 +82,8 @@ export const Auth = ({ onSuccess }: AuthProps) => {
       } else {
         setError('Failed to create account');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,6 +110,7 @@ export const Auth = ({ onSuccess }: AuthProps) => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             required
+            disabled={loading}
           />
         </div>
 
@@ -98,14 +124,20 @@ export const Auth = ({ onSuccess }: AuthProps) => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             required
+            disabled={loading}
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition-colors"
+          className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center"
+          disabled={loading}
         >
-          {isSignUp ? 'Sign Up' : 'Sign In'}
+          {loading ? (
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
+          ) : (
+            isSignUp ? 'Sign Up' : 'Sign In'
+          )}
         </button>
       </form>
 
@@ -113,6 +145,7 @@ export const Auth = ({ onSuccess }: AuthProps) => {
         <button
           onClick={signInWithGoogle}
           className="w-full border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2"
+          disabled={loading}
         >
           <img
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
@@ -128,6 +161,7 @@ export const Auth = ({ onSuccess }: AuthProps) => {
         <button
           onClick={() => setIsSignUp(!isSignUp)}
           className="ml-1 text-teal-600 hover:underline"
+          disabled={loading}
         >
           {isSignUp ? 'Sign In' : 'Sign Up'}
         </button>
