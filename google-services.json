@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "289051259567",
+    "project_id": "worldproblemsolver-56bdc",
+    "storage_bucket": "worldproblemsolver-56bdc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289051259567:android:8953028ccb4de399a0da5a",
+        "android_client_info": {
+          "package_name": "com.farmerbuddy.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289051259567-6ebrpge1vbpt0o3n5nfdk7ta4bc93e3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbmZyYA1ybQS0uUSqxgRgKpQuw2JnbAD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289051259567-6ebrpge1vbpt0o3n5nfdk7ta4bc93e3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

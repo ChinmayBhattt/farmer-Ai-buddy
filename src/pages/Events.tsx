@@ -16,6 +16,9 @@ interface Event {
   participants?: number;
   createdByMe?: boolean;
   description?: string;
+  capacity: string;
+  ticketType: 'free' | 'paid';
+  ticketPrice?: number;
 }
 
 interface EventFormData {
@@ -63,7 +66,10 @@ const Events: FC = () => {
         status: 'upcoming',
         participants: 1234,
         createdByMe: false,
-        description: 'Join us for an exciting hackathon where you can showcase your coding skills and win amazing prizes!'
+        description: 'Join us for an exciting hackathon where you can showcase your coding skills and win amazing prizes!',
+        capacity: 'Unlimited',
+        ticketType: 'free',
+        ticketPrice: 0
       },
       {
         id: 444,
@@ -75,7 +81,10 @@ const Events: FC = () => {
         status: 'upcoming',
         participants: 987,
         createdByMe: false,
-        description: 'Learn new technologies and best practices in this hands-on workshop.'
+        description: 'Learn new technologies and best practices in this hands-on workshop.',
+        capacity: 'Unlimited',
+        ticketType: 'free',
+        ticketPrice: 0
       },
       {
         id: 443,
@@ -87,7 +96,10 @@ const Events: FC = () => {
         status: 'upcoming',
         participants: 756,
         createdByMe: false,
-        description: 'A virtual conference bringing together the best minds in technology.'
+        description: 'A virtual conference bringing together the best minds in technology.',
+        capacity: 'Unlimited',
+        ticketType: 'free',
+        ticketPrice: 0
       }
     ];
   });
@@ -119,6 +131,9 @@ const Events: FC = () => {
     institution: ''
   });
 
+  // Add state for menu visibility
+  const [menuOpenEventId, setMenuOpenEventId] = useState<number | null>(null);
+
   // Save events to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('events', JSON.stringify(events));
@@ -144,7 +159,10 @@ const Events: FC = () => {
       status: 'upcoming',
       participants: 0,
       createdByMe: true,
-      description: formData.description
+      description: formData.description,
+      capacity: formData.capacity,
+      ticketType: formData.ticketType,
+      ticketPrice: formData.ticketPrice
     };
 
     setEvents(prev => [...prev, newEventObj]);
@@ -234,6 +252,33 @@ const Events: FC = () => {
     setFormData(prev => ({ ...prev, location }));
     setShowLocationSuggestions(false);
   };
+
+  // Add delete handler
+  const handleDeleteEvent = (eventId: number, e?: React.MouseEvent) => {
+    e?.stopPropagation(); // Prevent event card click when clicking delete button
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      setEvents(prev => prev.filter(event => event.id !== eventId));
+      setSelectedEvent(null);
+    }
+  };
+
+  // Add click handler for menu
+  const handleMenuClick = (eventId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpenEventId(menuOpenEventId === eventId ? null : eventId);
+  };
+
+  // Add click outside handler to close menu
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuOpenEventId !== null) {
+        setMenuOpenEventId(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [menuOpenEventId]);
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white w-full overflow-x-hidden">
@@ -542,12 +587,15 @@ const Events: FC = () => {
                   style={{ backgroundImage: `url(${selectedEvent.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent" />
-                <button 
-                  onClick={() => setSelectedEvent(null)}
-                  className="absolute top-4 right-4 p-2 bg-gray-900/50 hover:bg-gray-900/75 rounded-full transition-colors"
-                >
-                  <XMarkIcon className="w-6 h-6" />
-                </button>
+                <div className="absolute top-4 right-4">
+                  <button 
+                    onClick={() => setSelectedEvent(null)}
+                    className="p-2 bg-gray-900/50 hover:bg-gray-900/75 rounded-full transition-colors flex items-center space-x-2"
+                  >
+                    <span className="text-sm">Close</span>
+                    <XMarkIcon className="w-5 h-5" />
+                  </button>
+                </div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <h2 className="text-2xl font-semibold">{selectedEvent.title}</h2>
                   <div className="flex items-center space-x-4 mt-2">
@@ -568,7 +616,10 @@ const Events: FC = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <UserGroupIcon className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-300">{selectedEvent.participants} participants</span>
+                    <span className="text-gray-300">
+                      {selectedEvent.participants} participants
+                      {selectedEvent.capacity !== 'Unlimited' && ` / ${selectedEvent.capacity} max`}
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className={`px-3 py-1 rounded-full text-sm ${
@@ -588,12 +639,26 @@ const Events: FC = () => {
                   </div>
                 )}
 
+                <div className="flex items-center justify-between py-4 border-t border-gray-800">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gray-400">Ticket Type:</span>
+                    <span className="text-white font-medium capitalize">
+                      {selectedEvent.ticketType}
+                    </span>
+                  </div>
+                  {selectedEvent.ticketType === 'paid' && (
+                    <div className="text-white font-medium">
+                      ₹{selectedEvent.ticketPrice}
+                    </div>
+                  )}
+                </div>
+
                 <div className="pt-4 border-t border-gray-800">
                   <button 
                     onClick={() => setShowRegistration(true)}
                     className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
                   >
-                    Join Event
+                    {selectedEvent.ticketType === 'free' ? 'Join Event' : `Register • ₹${selectedEvent.ticketPrice}`}
                   </button>
                 </div>
               </div>
@@ -719,9 +784,35 @@ const Events: FC = () => {
                 key={event.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-800 rounded-xl overflow-hidden cursor-pointer hover:bg-gray-700/50 transition-colors"
+                className="bg-gray-800 rounded-xl overflow-hidden cursor-pointer hover:bg-gray-700/50 transition-colors relative group"
                 onClick={() => setSelectedEvent(event)}
               >
+                {event.createdByMe && (
+                  <div className="absolute top-2 right-2 z-10">
+                    <button
+                      onClick={(e) => handleMenuClick(event.id, e)}
+                      className="p-2 bg-gray-900/50 hover:bg-gray-900/75 rounded-full transition-colors"
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                        <circle cx="8" cy="3" r="1.5" />
+                        <circle cx="8" cy="8" r="1.5" />
+                        <circle cx="8" cy="13" r="1.5" />
+                      </svg>
+                    </button>
+                    
+                    {menuOpenEventId === event.id && (
+                      <div className="absolute top-full right-0 mt-1 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 overflow-hidden">
+                        <button
+                          onClick={(e) => handleDeleteEvent(event.id, e)}
+                          className="w-full px-4 py-2 text-left text-red-400 hover:bg-gray-700 transition-colors flex items-center space-x-2"
+                        >
+                          <XMarkIcon className="w-4 h-4" />
+                          <span>Delete Event</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="relative h-48">
                   <div
                     className="absolute inset-0 bg-cover bg-center"
