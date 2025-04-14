@@ -1,7 +1,8 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CalendarIcon, ClockIcon, UserGroupIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { eventBanners, getRandomBanner } from '../assets/eventBanners';
 
 interface Event {
   id: number;
@@ -17,9 +18,35 @@ interface Event {
   description?: string;
 }
 
+interface EventFormData {
+  eventName: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  location: string;
+  description: string;
+  isPublic: boolean;
+  requireApproval: boolean;
+  capacity: string;
+  coverImage: string | null;
+  ticketType: 'free' | 'paid';
+  ticketPrice: number;
+}
+
+// Add new interface for registration form
+interface RegistrationFormData {
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  institution: string;
+}
+
 const Events: FC = () => {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past' | 'my'>('upcoming');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showCreateEvent, setShowCreateEvent] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [events, setEvents] = useState<Event[]>(() => {
     const savedEvents = localStorage.getItem('events');
     if (savedEvents) {
@@ -32,10 +59,11 @@ const Events: FC = () => {
         date: 'Apr 6, 2025',
         time: '8:00 AM GMT+5:30',
         isVirtual: true,
-        image: '/event-bg-1.svg',
+        image: eventBanners.hackathon.url,
         status: 'upcoming',
         participants: 1234,
-        createdByMe: false
+        createdByMe: false,
+        description: 'Join us for an exciting hackathon where you can showcase your coding skills and win amazing prizes!'
       },
       {
         id: 444,
@@ -43,10 +71,11 @@ const Events: FC = () => {
         date: 'Mar 30, 2025',
         time: '8:00 AM GMT+5:30',
         isVirtual: true,
-        image: '/event-bg-1.svg',
+        image: eventBanners.workshop.url,
         status: 'upcoming',
         participants: 987,
-        createdByMe: false
+        createdByMe: false,
+        description: 'Learn new technologies and best practices in this hands-on workshop.'
       },
       {
         id: 443,
@@ -54,20 +83,40 @@ const Events: FC = () => {
         date: 'Mar 29, 2025',
         time: '8:00 PM GMT+5:30',
         isVirtual: true,
-        image: '/event-bg-2.svg',
+        image: eventBanners.conference.url,
         status: 'upcoming',
         participants: 756,
-        createdByMe: false
+        createdByMe: false,
+        description: 'A virtual conference bringing together the best minds in technology.'
       }
     ];
   });
 
-  const [newEvent, setNewEvent] = useState({
-    title: '',
-    date: '',
-    time: '',
+  const [locationSuggestions, setLocationSuggestions] = useState<string[]>([]);
+  const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
+  const [formData, setFormData] = useState<EventFormData>({
+    eventName: '',
+    startDate: '',
+    startTime: '12:30',
+    endDate: '',
+    endTime: '12:30',
+    location: '',
     description: '',
-    bannerColor: 'blue'
+    isPublic: true,
+    requireApproval: false,
+    capacity: 'Unlimited',
+    coverImage: null,
+    ticketType: 'free',
+    ticketPrice: 0
+  });
+
+  // Add new state for registration
+  const [showRegistration, setShowRegistration] = useState(false);
+  const [registrationData, setRegistrationData] = useState<RegistrationFormData>({
+    fullName: '',
+    phoneNumber: '',
+    email: '',
+    institution: ''
   });
 
   // Save events to localStorage whenever they change
@@ -76,37 +125,66 @@ const Events: FC = () => {
   }, [events]);
 
   const handleCreateEvent = () => {
-    const dateObj = new Date(`${newEvent.date}T${newEvent.time}`);
+    if (!formData.eventName || !formData.startDate || !formData.endDate) {
+      alert('Please fill in all required fields');
+      return;
+    }
 
     const newEventObj: Event = {
       id: Date.now(),
-      title: newEvent.title,
-      date: dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      time: dateObj.toLocaleTimeString('en-US', { 
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-      }) + ' GMT+5:30',
+      title: formData.eventName,
+      date: new Date(formData.startDate).toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+      }),
+      time: formData.startTime + ' GMT+5:30',
       isVirtual: true,
-      image: '/event-bg-1.svg',
+      image: formData.coverImage || getRandomBanner(),
       status: 'upcoming',
       participants: 0,
       createdByMe: true,
-      description: newEvent.description
+      description: formData.description
     };
 
     setEvents(prev => [...prev, newEventObj]);
-    setIsModalOpen(false);
-    setNewEvent({
-      title: '',
-      date: '',
-      time: '',
+    setShowCreateEvent(false);
+    setFormData({
+      eventName: '',
+      startDate: '',
+      startTime: '12:30',
+      endDate: '',
+      endTime: '12:30',
+      location: '',
       description: '',
-      bannerColor: 'blue'
+      isPublic: true,
+      requireApproval: false,
+      capacity: 'Unlimited',
+      coverImage: null,
+      ticketType: 'free',
+      ticketPrice: 0
     });
     
-    // Switch to My Events tab after creating
     setActiveTab('my');
+  };
+
+  const handleClose = () => {
+    setShowCreateEvent(false);
+    setFormData({
+      eventName: '',
+      startDate: '',
+      startTime: '12:30',
+      endDate: '',
+      endTime: '12:30',
+      location: '',
+      description: '',
+      isPublic: true,
+      requireApproval: false,
+      capacity: 'Unlimited',
+      coverImage: null,
+      ticketType: 'free',
+      ticketPrice: 0
+    });
   };
 
   const [rankings] = useState([
@@ -124,179 +202,512 @@ const Events: FC = () => {
     { icon: '👤', label: 'You', path: '/profile' }
   ];
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          coverImage: reader.result as string
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleLocationSearch = (query: string) => {
+    setFormData(prev => ({ ...prev, location: query }));
+    // Simulated location suggestions - replace with actual API call
+    const suggestions = [
+      'New York, USA',
+      'London, UK',
+      'Tokyo, Japan',
+      'Paris, France',
+      'Mumbai, India'
+    ].filter(loc => loc.toLowerCase().includes(query.toLowerCase()));
+    setLocationSuggestions(suggestions);
+    setShowLocationSuggestions(true);
+  };
+
+  const selectLocation = (location: string) => {
+    setFormData(prev => ({ ...prev, location }));
+    setShowLocationSuggestions(false);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white pb-24">
+    <div className="min-h-screen bg-[#1a1a1a] text-white w-full overflow-x-hidden">
       {/* Header */}
-      <div className="sticky top-0 bg-gray-900/95 backdrop-blur-sm z-10">
-        <div className="flex items-center justify-between p-4">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Events</h1>
-          <div className="flex items-center space-x-2">
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center space-x-2 hover:bg-blue-600 transition-colors"
-            >
-              <PlusIcon className="h-5 w-5" />
-              <span>Create Event</span>
-            </motion.button>
-            <Link 
-              to="/community"
-              className="p-2 rounded-full hover:bg-gray-800 transition-colors"
-            >
-              <UserGroupIcon className="w-6 h-6 text-gray-400" />
-            </Link>
+      <div className="sticky top-0 bg-[#1a1a1a]/95 backdrop-blur-sm z-10 border-b border-gray-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between p-4">
+            <div className="flex items-center space-x-4">
+              <h1 className="text-2xl font-semibold">Events</h1>
+              <div className="flex space-x-1">
+                {[
+                  { id: 'upcoming', label: 'Upcoming' },
+                  { id: 'past', label: 'Past Contests' },
+                  { id: 'my', label: 'My Contests' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                      activeTab === tab.id 
+                        ? 'bg-gray-800 text-white' 
+                        : 'text-gray-400 hover:bg-gray-800/50'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-        
-        {/* Tabs */}
-        <div className="flex space-x-1 px-4 border-b border-gray-800">
-          {[
-            { id: 'upcoming', label: 'Upcoming', icon: <CalendarIcon className="w-4 h-4" /> },
-            { id: 'past', label: 'Past Contests', icon: <ClockIcon className="w-4 h-4" /> },
-            { id: 'my', label: 'My Contests', icon: <UserGroupIcon className="w-4 h-4" /> }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-2 text-sm font-medium relative flex items-center space-x-2 ${
-                activeTab === tab.id ? 'text-white' : 'text-gray-400'
-              }`}
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
-                />
-              )}
-            </button>
-          ))}
         </div>
       </div>
 
+      {/* Floating Action Button for Create Event */}
+      <motion.button
+        onClick={() => setShowCreateEvent(true)}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="fixed bottom-20 right-4 z-50 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-4 shadow-lg flex flex-col items-center transition-colors"
+      >
+        <PlusIcon className="w-6 h-6" />
+        <span className="text-xs mt-1">Create</span>
+      </motion.button>
+
       {/* Create Event Modal */}
       <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-          >
+        {showCreateEvent && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl p-6 w-full max-w-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={handleClose}
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative bg-[#1a1a1a] w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-xl mx-4"
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">Create New Event</h2>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full"
-                >
-                  <XMarkIcon className="h-6 w-6 text-gray-500" />
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-[#1a1a1a]/95 backdrop-blur-sm p-4 border-b border-gray-800 flex items-center justify-between">
+                <h2 className="text-xl font-semibold">Create Event</h2>
+                <button onClick={handleClose} className="p-2 hover:bg-gray-800 rounded-lg">
+                  <XMarkIcon className="w-6 h-6" />
                 </button>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Event Title
-                  </label>
+              {/* Modal Content */}
+              <div className="p-4 space-y-6">
+                {/* Cover Image Upload */}
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="aspect-video bg-gray-800 rounded-lg border-2 border-dashed border-gray-700 flex items-center justify-center cursor-pointer hover:border-blue-500 transition-colors relative overflow-hidden"
+                >
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  {formData.coverImage ? (
+                    <div className="absolute inset-0">
+                      <img 
+                        src={formData.coverImage} 
+                        alt="Event cover" 
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <p className="text-white">Change Image</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center">
+                      <PlusIcon className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                      <p className="text-sm text-gray-400">Add Cover Image</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Event Details Form */}
+                <div className="space-y-4">
                   <input
                     type="text"
-                    value={newEvent.title}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, title: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter event title"
+                    placeholder="Event Name"
+                    value={formData.eventName}
+                    onChange={(e) => setFormData({ ...formData, eventName: e.target.value })}
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date
-                  </label>
-                  <input
-                    type="date"
-                    value={newEvent.date}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, date: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
+                  {/* Location Input with Suggestions */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Add Event Location"
+                      value={formData.location}
+                      onChange={(e) => handleLocationSearch(e.target.value)}
+                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                    />
+                    <span className="text-sm text-gray-400 mt-1 block">Offline location or virtual link</span>
+                    {showLocationSuggestions && locationSuggestions.length > 0 && (
+                      <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+                        {locationSuggestions.map((location, index) => (
+                          <button
+                            key={index}
+                            onClick={() => selectLocation(location)}
+                            className="w-full px-4 py-2 text-left hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                          >
+                            {location}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Time
-                  </label>
-                  <input
-                    type="time"
-                    value={newEvent.time}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, time: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-1">Start</label>
+                      <div className="flex space-x-2">
+                        <input
+                          type="date"
+                          value={formData.startDate}
+                          onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                          className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                        />
+                        <input
+                          type="time"
+                          value={formData.startTime}
+                          onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                          className="w-32 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-1">End</label>
+                      <div className="flex space-x-2">
+                        <input
+                          type="date"
+                          value={formData.endDate}
+                          onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                          className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                        />
+                        <input
+                          type="time"
+                          value={formData.endTime}
+                          onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                          className="w-32 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Description
-                  </label>
                   <textarea
-                    value={newEvent.description}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, description: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    rows={3}
-                    placeholder="Enter event description"
+                    placeholder="Add Description"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 min-h-[100px] resize-none"
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Banner Color
-                  </label>
-                  <div className="flex space-x-2">
-                    {['blue', 'green', 'purple', 'orange'].map((color) => (
-                      <button
-                        key={color}
-                        onClick={() => setNewEvent(prev => ({ ...prev, bannerColor: color }))}
-                        className={`w-8 h-8 rounded-full ${
-                          newEvent.bannerColor === color ? 'ring-2 ring-offset-2 ring-blue-500' : ''
-                        } ${
-                          color === 'blue' ? 'bg-blue-500' :
-                          color === 'green' ? 'bg-green-500' :
-                          color === 'purple' ? 'bg-purple-500' :
-                          'bg-orange-500'
-                        }`}
-                      />
-                    ))}
+                  {/* Ticket Options */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between py-2">
+                      <div className="flex items-center space-x-2">
+                        <CalendarIcon className="w-5 h-5 text-gray-400" />
+                        <span>Tickets</span>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <label className="inline-flex items-center">
+                          <input
+                            type="radio"
+                            className="form-radio text-blue-500"
+                            checked={formData.ticketType === 'free'}
+                            onChange={() => setFormData(prev => ({ ...prev, ticketType: 'free', ticketPrice: 0 }))}
+                          />
+                          <span className="ml-2">Free</span>
+                        </label>
+                        <label className="inline-flex items-center">
+                          <input
+                            type="radio"
+                            className="form-radio text-blue-500"
+                            checked={formData.ticketType === 'paid'}
+                            onChange={() => setFormData(prev => ({ ...prev, ticketType: 'paid' }))}
+                          />
+                          <span className="ml-2">Paid</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {formData.ticketType === 'paid' && (
+                      <div className="flex items-center space-x-2">
+                        <span className="text-gray-400">₹</span>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={formData.ticketPrice}
+                          onChange={(e) => setFormData(prev => ({ ...prev, ticketPrice: parseFloat(e.target.value) || 0 }))}
+                          className="w-32 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
+                    )}
+
+                    {/* Capacity Input */}
+                    <div className="flex items-center justify-between py-2">
+                      <div className="flex items-center space-x-2">
+                        <UserGroupIcon className="w-5 h-5 text-gray-400" />
+                        <span>Capacity</span>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <label className="inline-flex items-center">
+                          <input
+                            type="radio"
+                            className="form-radio text-blue-500"
+                            checked={formData.capacity === 'Unlimited'}
+                            onChange={() => setFormData(prev => ({ ...prev, capacity: 'Unlimited' }))}
+                          />
+                          <span className="ml-2">Unlimited</span>
+                        </label>
+                        <label className="inline-flex items-center">
+                          <input
+                            type="radio"
+                            className="form-radio text-blue-500"
+                            checked={formData.capacity !== 'Unlimited'}
+                            onChange={() => setFormData(prev => ({ ...prev, capacity: '1' }))}
+                          />
+                          <span className="ml-2">Limited</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {formData.capacity !== 'Unlimited' && (
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="number"
+                          min="1"
+                          value={formData.capacity}
+                          onChange={(e) => setFormData(prev => ({ ...prev, capacity: e.target.value }))}
+                          className="w-32 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                        />
+                        <span className="text-gray-400">participants</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="sticky bottom-0 bg-[#1a1a1a]/95 backdrop-blur-sm p-4 border-t border-gray-800">
+                <button
+                  onClick={handleCreateEvent}
+                  className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                >
+                  Create Event
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Event Details Modal */}
+      <AnimatePresence>
+        {selectedEvent && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setSelectedEvent(null)}
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative bg-[#1a1a1a] w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-xl mx-4"
+            >
+              {/* Modal Header */}
+              <div className="relative h-64">
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${selectedEvent.image})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent" />
+                <button 
+                  onClick={() => setSelectedEvent(null)}
+                  className="absolute top-4 right-4 p-2 bg-gray-900/50 hover:bg-gray-900/75 rounded-full transition-colors"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h2 className="text-2xl font-semibold">{selectedEvent.title}</h2>
+                  <div className="flex items-center space-x-4 mt-2">
+                    <div className="flex items-center space-x-2">
+                      <CalendarIcon className="w-5 h-5 text-gray-300" />
+                      <span className="text-gray-300">{selectedEvent.date}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <ClockIcon className="w-5 h-5 text-gray-300" />
+                      <span className="text-gray-300">{selectedEvent.time}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <UserGroupIcon className="w-5 h-5 text-gray-400" />
+                    <span className="text-gray-300">{selectedEvent.participants} participants</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className={`px-3 py-1 rounded-full text-sm ${
+                      selectedEvent.status === 'upcoming' 
+                        ? 'bg-green-500/20 text-green-400'
+                        : 'bg-gray-500/20 text-gray-400'
+                    }`}>
+                      {selectedEvent.status === 'upcoming' ? 'Upcoming' : 'Ended'}
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    onClick={() => setIsModalOpen(false)}
-                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                {selectedEvent.description && (
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">About Event</h3>
+                    <p className="text-gray-300">{selectedEvent.description}</p>
+                  </div>
+                )}
+
+                <div className="pt-4 border-t border-gray-800">
+                  <button 
+                    onClick={() => setShowRegistration(true)}
+                    className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleCreateEvent}
-                    className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                  >
-                    Create Event
+                    Join Event
                   </button>
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Registration Modal */}
+      <AnimatePresence>
+        {showRegistration && selectedEvent && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setShowRegistration(false)}
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative bg-[#1a1a1a] w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl shadow-xl mx-4"
+            >
+              {/* Registration Header */}
+              <div className="sticky top-0 bg-[#1a1a1a]/95 backdrop-blur-sm p-4 border-b border-gray-800 flex items-center justify-between">
+                <h2 className="text-xl font-semibold">Register for Event</h2>
+                <button 
+                  onClick={() => setShowRegistration(false)} 
+                  className="p-2 hover:bg-gray-800 rounded-lg"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Registration Form */}
+              <div className="p-6 space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">Full Name</label>
+                    <input
+                      type="text"
+                      value={registrationData.fullName}
+                      onChange={(e) => setRegistrationData(prev => ({ ...prev, fullName: e.target.value }))}
+                      placeholder="Enter your full name"
+                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">Phone Number</label>
+                    <input
+                      type="tel"
+                      value={registrationData.phoneNumber}
+                      onChange={(e) => setRegistrationData(prev => ({ ...prev, phoneNumber: e.target.value }))}
+                      placeholder="Enter your phone number"
+                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      value={registrationData.email}
+                      onChange={(e) => setRegistrationData(prev => ({ ...prev, email: e.target.value }))}
+                      placeholder="Enter your email address"
+                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">College/School Name</label>
+                    <input
+                      type="text"
+                      value={registrationData.institution}
+                      onChange={(e) => setRegistrationData(prev => ({ ...prev, institution: e.target.value }))}
+                      placeholder="Enter your college or school name"
+                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Registration Footer */}
+              <div className="sticky bottom-0 bg-[#1a1a1a]/95 backdrop-blur-sm p-4 border-t border-gray-800">
+                <button
+                  onClick={() => {
+                    // Handle registration submission here
+                    alert('Registration successful!');
+                    setShowRegistration(false);
+                    setSelectedEvent(null);
+                    setRegistrationData({
+                      fullName: '',
+                      phoneNumber: '',
+                      email: '',
+                      institution: ''
+                    });
+                  }}
+                  className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                >
+                  Register Now
+                </button>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="p-4">
-        <div className="grid grid-cols-1 gap-4 mb-6">
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events
             .filter(event => 
               (activeTab === 'upcoming' && event.status === 'upcoming' && !event.createdByMe) ||
@@ -308,43 +719,22 @@ const Events: FC = () => {
                 key={event.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-800 rounded-xl overflow-hidden"
+                className="bg-gray-800 rounded-xl overflow-hidden cursor-pointer hover:bg-gray-700/50 transition-colors"
+                onClick={() => setSelectedEvent(event)}
               >
-                <div className="relative h-40">
+                <div className="relative h-48">
                   <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url(${event.image})`,
-                      backgroundSize: 'cover'
-                    }}
+                    style={{ backgroundImage: `url(${event.image})` }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-lg font-semibold">{event.title}</h3>
-                        <div className="flex items-center space-x-3 mt-1">
-                          <p className="text-sm text-gray-300">{event.date} • {event.time}</p>
-                          <div className="flex items-center text-sm text-gray-300">
-                            <UserGroupIcon className="w-4 h-4 mr-1" />
-                            {event.participants}
-                          </div>
-                        </div>
-                        {event.description && (
-                          <p className="text-sm text-gray-400 mt-2">{event.description}</p>
-                        )}
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        {event.isVirtual && (
-                          <span className="px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded-full">
-                            Virtual
-                          </span>
-                        )}
-                        {event.createdByMe && (
-                          <span className="px-2 py-1 text-xs bg-green-500/20 text-green-300 rounded-full">
-                            Created by me
-                          </span>
-                        )}
+                    <h3 className="text-lg font-semibold">{event.title}</h3>
+                    <div className="flex items-center space-x-3 mt-1">
+                      <p className="text-sm text-gray-300">{event.date} • {event.time}</p>
+                      <div className="flex items-center text-sm text-gray-300">
+                        <UserGroupIcon className="w-4 h-4 mr-1" />
+                        {event.participants}
                       </div>
                     </div>
                   </div>
@@ -355,7 +745,7 @@ const Events: FC = () => {
 
         {/* Global Rankings */}
         {activeTab === 'upcoming' && (
-          <div className="bg-gray-800 rounded-xl p-4">
+          <div className="bg-gray-800 rounded-xl p-4 mt-4">
             <h2 className="text-lg font-semibold mb-4 flex items-center">
               <span className="mr-2">🏆</span> Global Rankings
             </h2>

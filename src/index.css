@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a1a;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  background-color: #1a1a1a;
+}
+
+/* Ensure buttons are visible */
+button {
+  position: relative;
+  z-index: 20;
+}
+
+/* Fix for sticky header */
+.sticky {
+  position: sticky;
+  z-index: 30;
+}
+
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
