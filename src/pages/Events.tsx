@@ -270,7 +270,7 @@ const Events: FC = () => {
 
   // Add click outside handler to close menu
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = () => {
       if (menuOpenEventId !== null) {
         setMenuOpenEventId(null);
       }
