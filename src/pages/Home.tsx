@@ -7,6 +7,7 @@ import PestsAndDiseases from '../components/PestsAndDiseases';
 import CultivationTips from '../components/CultivationTips';
 import DiseaseAlert from '../components/DiseaseAlert';
 import GlobalProblems from '../components/GlobalProblems';
+import GlobalIssuePodcast from '../components/GlobalIssuePodcast';
 
 interface WeatherData {
   main: {
@@ -225,6 +226,9 @@ const Home: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Global Issue Podcast Section */}
+      <GlobalIssuePodcast />
 
       {/* Weather Card */}
       <div className="px-4 mb-4">
