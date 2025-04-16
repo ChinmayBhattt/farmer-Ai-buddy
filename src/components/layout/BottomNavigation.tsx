@@ -11,7 +11,7 @@ const BottomNavigation = () => {
 
   const navItems = [
     {
-      name: 'Your crops',
+      name: 'Home',
       icon: HomeIcon,
       path: '/',
     },
