@@ -170,7 +170,7 @@ const GlobalIssuePodcast: React.FC = () => {
                     {video.channelTitle}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {formatViewCount(video.viewCount || '0')}
+                    {formatViewCount(video.viewCount || '0')} • {formatDate(video.publishedAt)}
                   </p>
                 </a>
               </div>

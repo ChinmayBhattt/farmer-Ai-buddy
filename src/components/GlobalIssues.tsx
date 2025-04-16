@@ -37,7 +37,11 @@ const GlobalIssues: React.FC = () => {
         let fetchedVideos: Video[];
         
         if (isOnline) {
-          fetchedVideos = await fetchYouTubeVideos(selectedCategory);
+          const youtubeVideos = await fetchYouTubeVideos(selectedCategory);
+          fetchedVideos = youtubeVideos.map(video => ({
+            ...video,
+            category: selectedCategory
+          }));
         } else {
           fetchedVideos = getOfflineVideos(selectedCategory);
         }

@@ -160,8 +160,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, videoId, title, onClose 
       >
         {/* Title */}
         {title && (
-          <div className="absolute top-0 left-0 right-0 p-4 text-white text-lg font-medium">
-            {title}
+          <div className="absolute top-0 left-0 right-0 p-4 text-white text-lg font-medium flex justify-between items-center">
+            <span>{title}</span>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="text-white hover:text-gray-300 transition-colors"
+              >
+                ✕
+              </button>
+            )}
           </div>
         )}
 
