@@ -13,6 +13,16 @@ const OFFLINE_VIDEOS: Video[] = [
     category: 'Global Warming'
   },
   {
+    id: btoa('global-warming-2'),
+    title: 'How Global Warming Affects Indian Agriculture',
+    thumbnail: '/assets/thumbnails/global-warming-2.jpg',
+    channelTitle: 'Indian Farming Network',
+    publishedAt: '2024-02-01T00:00:00Z',
+    description: 'Impact of climate change on Indian farming communities',
+    viewCount: '85000',
+    category: 'Global Warming'
+  },
+  {
     id: btoa('climate-change-1'),
     title: 'Climate Change: The Science Behind Earth\'s Changes',
     thumbnail: '/assets/thumbnails/climate-change-1.jpg',
@@ -20,6 +30,16 @@ const OFFLINE_VIDEOS: Video[] = [
     publishedAt: '2024-01-20T00:00:00Z',
     description: 'Understanding climate change through scientific evidence',
     viewCount: '200000',
+    category: 'Climate Change'
+  },
+  {
+    id: btoa('climate-change-2'),
+    title: 'Climate Change Effects in South Asia',
+    thumbnail: '/assets/thumbnails/climate-change-2.jpg',
+    channelTitle: 'South Asian Environmental Studies',
+    publishedAt: '2024-02-15T00:00:00Z',
+    description: 'How climate change is affecting South Asian countries',
+    viewCount: '120000',
     category: 'Climate Change'
   },
   {
@@ -33,6 +53,16 @@ const OFFLINE_VIDEOS: Video[] = [
     category: 'Biodiversity Loss'
   },
   {
+    id: btoa('biodiversity-2'),
+    title: 'Indian Wildlife: Protecting Our Natural Heritage',
+    thumbnail: '/assets/thumbnails/biodiversity-2.jpg',
+    channelTitle: 'Indian Wildlife Foundation',
+    publishedAt: '2024-03-01T00:00:00Z',
+    description: 'Conservation efforts in Indian wildlife sanctuaries',
+    viewCount: '95000',
+    category: 'Biodiversity Loss'
+  },
+  {
     id: btoa('sea-level-1'),
     title: 'Rising Seas: Coastal Communities at Risk',
     thumbnail: '/assets/thumbnails/sea-level-1.jpg',
@@ -43,6 +73,16 @@ const OFFLINE_VIDEOS: Video[] = [
     category: 'Sea Level Rise'
   },
   {
+    id: btoa('sea-level-2'),
+    title: 'Mumbai 2050: Preparing for Rising Sea Levels',
+    thumbnail: '/assets/thumbnails/sea-level-2.jpg',
+    channelTitle: 'Urban Planning Institute',
+    publishedAt: '2024-03-15T00:00:00Z',
+    description: 'How Mumbai is adapting to rising sea levels',
+    viewCount: '75000',
+    category: 'Sea Level Rise'
+  },
+  {
     id: btoa('deforestation-1'),
     title: 'Deforestation: The Impact on Our Planet',
     thumbnail: '/assets/thumbnails/deforestation-1.jpg',
@@ -50,6 +90,16 @@ const OFFLINE_VIDEOS: Video[] = [
     publishedAt: '2024-02-15T00:00:00Z',
     description: 'Examining the causes and effects of deforestation',
     viewCount: '160000',
+    category: 'Deforestation'
+  },
+  {
+    id: btoa('deforestation-2'),
+    title: 'Saving Indian Forests: A Community Approach',
+    thumbnail: '/assets/thumbnails/deforestation-2.jpg',
+    channelTitle: 'Indian Forest Service',
+    publishedAt: '2024-03-20T00:00:00Z',
+    description: 'Community-based forest conservation initiatives in India',
+    viewCount: '110000',
     category: 'Deforestation'
   }
 ];
