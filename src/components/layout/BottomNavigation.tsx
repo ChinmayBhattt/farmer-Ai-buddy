@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
   HomeIcon,
-  ChatBubbleLeftRightIcon,
+  GlobeAltIcon,
   CalendarIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
@@ -16,8 +16,8 @@ const BottomNavigation = () => {
       path: '/',
     },
     {
-      name: 'Community',
-      icon: ChatBubbleLeftRightIcon,
+      name: 'Discover',
+      icon: GlobeAltIcon,
       path: '/community',
     },
     {

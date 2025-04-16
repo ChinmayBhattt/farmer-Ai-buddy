@@ -72,7 +72,7 @@ const cropFilters: CropFilter[] = [
 
 const navigationItems = [
   { icon: '🏠', label: 'Your crops', path: '/' },
-  { icon: '👥', label: 'Community', path: '/community' },
+  { icon: '🧭', label: 'Discover', path: '/community' },
   { icon: '📅', label: 'Events', path: '/events' },
   { icon: '👤', label: 'You', path: '/profile' }
 ];
