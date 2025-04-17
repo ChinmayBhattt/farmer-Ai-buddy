@@ -175,7 +175,7 @@ const GlobalIssues: React.FC = () => {
                     {video.title}
                   </h3>
                   <p className="text-sm text-gray-500">
-                    {video.channelTitle} • {new Date(video.publishedAt || new Date().toISOString()).toLocaleDateString()}
+                    {video.channelTitle} • {new Date(video.publishedAt ?? new Date()).toLocaleDateString()}
                   </p>
                   {video.viewCount && (
                     <p className="text-sm text-gray-500 mt-1">
