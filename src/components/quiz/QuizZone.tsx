@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QuizGame from './QuizGame';
+import QuizGame from './QuizGame.tsx';
 import { quizCategories } from './quizData';
-
-interface Category {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  totalQuestions: number;
-}
 
 const QuizZone: React.FC = () => {
   const navigate = useNavigate();

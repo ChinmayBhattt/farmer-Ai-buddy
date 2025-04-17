@@ -1,10 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const ProblemsQuiz: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <section className="bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="p-6">
