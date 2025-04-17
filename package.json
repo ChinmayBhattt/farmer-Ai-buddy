@@ -20,7 +20,7 @@
     "dexie": "^3.2.6",
     "firebase": "^10.14.1",
     "firebase-admin": "^13.2.0",
-    "framer-motion": "^12.6.3",
+    "framer-motion": "^12.7.4",
     "i18next": "^23.10.1",
     "lucide-react": "^0.488.0",
     "react": "^18.2.0",

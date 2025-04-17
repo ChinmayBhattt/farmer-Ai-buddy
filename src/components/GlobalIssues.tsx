@@ -5,6 +5,7 @@ import { networkService } from '../services/networkService';
 import VideoPlayer from './VideoPlayer';
 import { Loader2, Wifi, WifiOff } from 'lucide-react';
 import { Video, VideoCategory } from '../types/video';
+import ProblemsQuiz from './quiz/ProblemsQuiz';
 
 const categories: VideoCategory[] = [
   'All Topics',
@@ -138,53 +139,61 @@ const GlobalIssues: React.FC = () => {
       )}
 
       {/* Video Grid */}
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <Loader2 className="w-8 h-8 animate-spin text-green-600" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <div
-              key={video.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-              onClick={() => handleVideoClick(video)}
-            >
-              <div className="relative aspect-video">
-                <img
-                  src={video.thumbnail}
-                  alt={video.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-opacity flex items-center justify-center">
-                  <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
+      <div className="mb-12">
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {videos.map((video) => (
+              <div
+                key={video.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => handleVideoClick(video)}
+              >
+                <div className="relative aspect-video">
+                  <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-opacity flex items-center justify-center">
+                    <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-6 h-6 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-4">
-                <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">
-                  {video.title}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  {video.channelTitle} • {new Date(video.publishedAt || new Date().toISOString()).toLocaleDateString()}
-                </p>
-                {video.viewCount && (
-                  <p className="text-sm text-gray-500 mt-1">
-                    {parseInt(video.viewCount).toLocaleString()} views
+                <div className="p-4">
+                  <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">
+                    {video.title}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {video.channelTitle} • {new Date(video.publishedAt || new Date().toISOString()).toLocaleDateString()}
                   </p>
-                )}
+                  {video.viewCount && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      {parseInt(video.viewCount).toLocaleString()} views
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Divider */}
+      <div className="w-full border-t border-gray-200 my-12"></div>
+
+      {/* Problems Quiz Section */}
+      <ProblemsQuiz />
     </div>
   );
 };
