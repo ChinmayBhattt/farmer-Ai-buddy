@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { fetchYouTubeVideos, YouTubeVideo } from '../services/youtubeApi';
+import { fetchYouTubeVideos } from '../services/youtubeApi';
+import { Video } from '../types/video';
 
 const categories = [
   'Global Warming',
@@ -18,7 +19,7 @@ const categories = [
 
 const GlobalIssuePodcast: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);

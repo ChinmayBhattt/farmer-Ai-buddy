@@ -16,6 +16,7 @@
     "@tensorflow-models/mobilenet": "^2.1.1",
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.8.4",
+    "date-fns": "^4.1.0",
     "dexie": "^3.2.6",
     "firebase": "^10.14.1",
     "firebase-admin": "^13.2.0",

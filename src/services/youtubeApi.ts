@@ -1,108 +1,50 @@
-import axios from 'axios';
+import { Video } from '../types/video';
+import { getFallbackVideos } from './fallbackVideos';
 
-const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
-const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-export interface YouTubeVideo {
-  id: string;
-  title: string;
-  thumbnail: string;
-  channelTitle: string;
-  publishedAt: string;
-  description?: string;
-  viewCount?: string;
-}
-
-interface YouTubeVideoDetails {
-  id: string;
-  statistics?: {
-    viewCount?: string;
-  };
-}
-
-const getSearchQuery = (category: string): string => {
-  if (category === 'All Topics') {
-    return '(Global Warming OR Glacial Melting OR Climate Change OR Ozone Layer OR ' +
-           'Sea Level Rise OR Desertification OR Coral Reef OR Biodiversity Loss OR ' +
-           'E-waste OR Environmental Refugee OR Permafrost OR Antarctica) ' +
-           '(documentary OR educational OR explained OR crisis)';
-  }
-  return `${category} (documentary OR educational OR explained OR effects OR crisis OR impact)`;
-};
-
-export const fetchYouTubeVideos = async (category: string): Promise<YouTubeVideo[]> => {
-  if (!YOUTUBE_API_KEY) {
-    throw new Error('YouTube API key is missing. Please check your environment variables.');
-  }
-
+export const fetchYouTubeVideos = async (category: string): Promise<Video[]> => {
   try {
-    const searchParams = {
-      part: 'snippet',
-      q: getSearchQuery(category),
-      type: 'video',
-      maxResults: 15,
-      key: YOUTUBE_API_KEY,
-      order: 'relevance',
-      relevanceLanguage: 'en',
-      videoDuration: 'long',
-      hl: 'en',
-    };
-
-    const searchResponse = await axios.get(`${YOUTUBE_API_URL}/search`, { params: searchParams });
-
-    if (!searchResponse.data?.items?.length) {
-      return [];
+    if (!API_KEY) {
+      console.log('No API key found, using fallback videos');
+      return getFallbackVideos(category);
     }
 
-    const videoIds = searchResponse.data.items.map((item: any) => item.id.videoId).join(',');
-    const videoParams = {
-      part: 'statistics,snippet',
-      id: videoIds,
-      key: YOUTUBE_API_KEY,
-    };
+    const searchQuery = category === 'All Topics' 
+      ? '(Global Warming OR Glacial Melting OR Climate Change OR Ozone Layer OR Sea Level Rise OR Desertification OR Coral Reef OR Biodiversity Loss OR E-waste OR Environmental Refugee OR Permafrost Thawing OR Antarctica) (documentary OR educational OR explained OR crisis)'
+      : `${category} (documentary OR educational OR explained OR crisis)`;
 
-    const videoResponse = await axios.get(`${YOUTUBE_API_URL}/videos`, { params: videoParams });
-    const videoDetails = new Map<string, YouTubeVideoDetails>(
-      videoResponse.data.items.map((item: YouTubeVideoDetails) => [item.id, item])
+    const response = await fetch(
+      `${BASE_URL}?part=snippet&maxResults=10&q=${encodeURIComponent(searchQuery)}&type=video&key=${API_KEY}`
     );
 
-    return searchResponse.data.items
-      .map((item: any) => {
-        const details = videoDetails.get(item.id.videoId);
-        if (!item.id?.videoId || !item.snippet) return null;
-
-        return {
-          id: item.id.videoId,
-          title: item.snippet.title || 'Untitled',
-          thumbnail: item.snippet.thumbnails?.maxres?.url || 
-                    item.snippet.thumbnails?.high?.url || 
-                    item.snippet.thumbnails?.medium?.url || '',
-          channelTitle: item.snippet.channelTitle || 'Unknown Channel',
-          publishedAt: item.snippet.publishedAt || new Date().toISOString(),
-          description: item.snippet.description || '',
-          viewCount: details?.statistics?.viewCount || '0',
-        };
-      })
-      .filter(Boolean);
-  } catch (error: any) {
-    console.error('YouTube API Error:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status,
-    });
-
-    if (error.response?.status === 403) {
-      throw new Error('YouTube API key is invalid or has insufficient permissions');
+    if (!response.ok) {
+      console.log('YouTube API error, using fallback videos');
+      return getFallbackVideos(category);
     }
 
-    if (error.response?.status === 429) {
-      throw new Error('YouTube API quota exceeded. Please try again later');
+    const data = await response.json();
+    
+    if (!data.items || data.items.length === 0) {
+      console.log('No videos found from API, using fallback videos');
+      return getFallbackVideos(category);
     }
 
-    throw new Error(
-      error.response?.data?.error?.message || 
-      error.message || 
-      'Failed to fetch videos from YouTube'
-    );
+    return data.items.map((item: any) => ({
+      id: item.id.videoId,
+      title: item.snippet.title,
+      thumbnail: item.snippet.thumbnails.high.url,
+      channelTitle: item.snippet.channelTitle,
+      publishedAt: item.snippet.publishedAt,
+      description: item.snippet.description,
+      viewCount: '0', // View count not available in search endpoint
+      category: category
+    }));
+
+  } catch (error) {
+    console.error('Error fetching YouTube videos:', error);
+    console.log('Using fallback videos due to error');
+    return getFallbackVideos(category);
   }
 }; 
