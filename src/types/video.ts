@@ -3,10 +3,10 @@ export interface Video {
   title: string;
   thumbnail: string;
   channelTitle: string;
-  publishedAt: string;
-  description?: string;
-  viewCount?: string;
+  description: string;
   category: string;
+  publishedAt?: string;
+  viewCount?: string;
 }
 
 export type VideoCategory = 

@@ -8,7 +8,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/SQnJnc-hVAI/default.jpg',
       channelTitle: 'DW Documentary',
       description: 'A comprehensive look at global warming, its causes, and effects on our planet.',
-      category: 'Global Warming'
+      category: 'Global Warming',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: 'dcBXmj1nMTQ',
@@ -16,7 +17,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/dcBXmj1nMTQ/default.jpg',
       channelTitle: 'SCHOOL',
       description: 'How global warming is affecting our planet - explained through animation.',
-      category: 'Global Warming'
+      category: 'Global Warming',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Glacial Melting': [
@@ -26,7 +28,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/qKjV-4MYlXU/default.jpg',
       channelTitle: 'DW Documentary',
       description: 'The end of the Alps? How climate change is affecting European glaciers.',
-      category: 'Glacial Melting'
+      category: 'Glacial Melting',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: 'ujkcTZZBIIE',
@@ -34,7 +37,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/ujkcTZZBIIE/default.jpg',
       channelTitle: 'National Geographic',
       description: 'How climate change is affecting Antarctic ice sheets.',
-      category: 'Glacial Melting'
+      category: 'Glacial Melting',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Ozone Layer Depletion': [
@@ -44,7 +48,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/CaLOiGEDPJQ/default.jpg',
       channelTitle: 'Science ABC',
       description: 'Understanding ozone layer depletion and its effects on Earth.',
-      category: 'Ozone Layer Depletion'
+      category: 'Ozone Layer Depletion',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: '3HaCqoaIT6g',
@@ -52,7 +57,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/3HaCqoaIT6g/default.jpg',
       channelTitle: 'DW Planet A',
       description: 'How the world came together to save the ozone layer.',
-      category: 'Ozone Layer Depletion'
+      category: 'Ozone Layer Depletion',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Desertification': [
@@ -62,7 +68,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/q4c1a3atqjo/default.jpg',
       channelTitle: 'DW Documentary',
       description: 'The battle against desertification in Africa.',
-      category: 'Desertification'
+      category: 'Desertification',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: 'OrFN35x1JoQ',
@@ -70,7 +77,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/OrFN35x1JoQ/default.jpg',
       channelTitle: 'Science ABC',
       description: 'Understanding desertification and its global impact.',
-      category: 'Desertification'
+      category: 'Desertification',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Coral Reef Destruction': [
@@ -80,7 +88,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/aGGBGcB4_N8/default.jpg',
       channelTitle: 'DW Planet A',
       description: 'The crisis facing coral reefs worldwide.',
-      category: 'Coral Reef Destruction'
+      category: 'Coral Reef Destruction',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: '14zUXP5EVkc',
@@ -88,7 +97,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/14zUXP5EVkc/default.jpg',
       channelTitle: 'National Geographic',
       description: 'Understanding coral reefs and the threats they face.',
-      category: 'Coral Reef Destruction'
+      category: 'Coral Reef Destruction',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Loss of Biodiversity': [
@@ -98,7 +108,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/ua-jvWD6iYI/default.jpg',
       channelTitle: 'DW Documentary',
       description: 'Understanding the current biodiversity crisis.',
-      category: 'Loss of Biodiversity'
+      category: 'Loss of Biodiversity',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: 'GK_vRtHJZu4',
@@ -106,7 +117,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/GK_vRtHJZu4/default.jpg',
       channelTitle: 'Science ABC',
       description: 'The importance of biodiversity for life on Earth.',
-      category: 'Loss of Biodiversity'
+      category: 'Loss of Biodiversity',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'E-waste Mismanagement': [
@@ -116,7 +128,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/ITwYH4UOeM4/default.jpg',
       channelTitle: 'DW Documentary',
       description: 'The growing problem of electronic waste.',
-      category: 'E-waste Mismanagement'
+      category: 'E-waste Mismanagement',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: '4L0tLY8HTpc',
@@ -124,7 +137,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/4L0tLY8HTpc/default.jpg',
       channelTitle: 'Science ABC',
       description: 'The journey of electronic waste and its environmental impact.',
-      category: 'E-waste Mismanagement'
+      category: 'E-waste Mismanagement',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Refugee Crisis': [
@@ -134,7 +148,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/yRPVT6ZpMzs/default.jpg',
       channelTitle: 'DW Documentary',
       description: 'How climate change is creating environmental refugees.',
-      category: 'Refugee Crisis'
+      category: 'Refugee Crisis',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: 'wC6DX6VLnFg',
@@ -142,7 +157,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/wC6DX6VLnFg/default.jpg',
       channelTitle: 'Science ABC',
       description: 'Understanding the link between environmental changes and human migration.',
-      category: 'Refugee Crisis'
+      category: 'Refugee Crisis',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Permafrost Thawing': [
@@ -152,7 +168,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/9GZx3P3PY_A/default.jpg',
       channelTitle: 'DW Planet A',
       description: 'The dangers of thawing permafrost in the Arctic.',
-      category: 'Permafrost Thawing'
+      category: 'Permafrost Thawing',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: 'y7ZoeBHyG1c',
@@ -160,7 +177,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/y7ZoeBHyG1c/default.jpg',
       channelTitle: 'Science ABC',
       description: 'Understanding permafrost and why its thawing is concerning.',
-      category: 'Permafrost Thawing'
+      category: 'Permafrost Thawing',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ],
   'Antarctica Melting': [
@@ -170,7 +188,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/Z1w5tSzJ_dk/default.jpg',
       channelTitle: 'DW Documentary',
       description: 'How climate change is affecting Antarctica.',
-      category: 'Antarctica Melting'
+      category: 'Antarctica Melting',
+      publishedAt: '2023-07-13T10:00:00Z'
     },
     {
       id: 'pJ1U0RGPDgY',
@@ -178,7 +197,8 @@ export const FALLBACK_VIDEOS: Record<string, Video[]> = {
       thumbnail: 'https://i.ytimg.com/vi/pJ1U0RGPDgY/default.jpg',
       channelTitle: 'Science ABC',
       description: 'Understanding Antarctica\'s ice sheets and their melting.',
-      category: 'Antarctica Melting'
+      category: 'Antarctica Melting',
+      publishedAt: '2023-06-29T15:30:00Z'
     }
   ]
 };
