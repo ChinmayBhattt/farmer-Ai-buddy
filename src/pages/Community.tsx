@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from 'react';
-import { MagnifyingGlassIcon, BellIcon } from '@heroicons/react/24/outline';
+import { FC, useEffect, useState, useRef, useCallback } from 'react';
+import { MagnifyingGlassIcon, BellIcon, BellSlashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 
 interface NewsItem {
@@ -51,20 +51,56 @@ const GNEWS_API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
 const Community: FC = () => {
   const [newsItems, setNewsItems] = useState<NewsItem[]>(FALLBACK_NEWS);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [retryCount, setRetryCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [showNotifyMenu, setShowNotifyMenu] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const notifyMenuRef = useRef<HTMLDivElement>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastNewsElementRef = useCallback((node: HTMLDivElement | null) => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore]);
 
-  const cropFilters = [
-    { name: 'Climate', icon: '🌡️', query: 'climate crisis melting ice' },
-    { name: 'Agriculture', icon: '🌾', query: 'sustainable farming drought' },
-    { name: 'Environment', icon: '🌍', query: 'environmental disaster pollution' },
-    { name: 'Water', icon: '💧', query: 'water crisis shortage pollution' },
+  const environmentalIssues = [
+    { name: 'Global Warming', icon: '🌡️', query: 'global warming climate crisis temperature rise' },
+    { name: 'Glacial Melting', icon: '🧊', query: 'glacier melting ice caps arctic antarctic' },
+    { name: 'Climate Change', icon: '🌍', query: 'climate change extreme weather natural disasters' },
+    { name: 'Ozone Layer', icon: '☀️', query: 'ozone layer depletion UV radiation' },
+    { name: 'Sea Level Rise', icon: '🌊', query: 'sea level rise coastal flooding islands' },
+    { name: 'Desertification', icon: '🏜️', query: 'desertification land degradation drought' },
+    { name: 'Coral Reefs', icon: '🐠', query: 'coral reef bleaching ocean acidification marine' },
+    { name: 'Biodiversity', icon: '🦋', query: 'biodiversity loss species extinction wildlife' },
+    { name: 'E-waste', icon: '🔌', query: 'electronic waste e-waste recycling pollution' },
+    { name: 'Refugee Crisis', icon: '🏃', query: 'climate refugees environmental migration displacement' },
+    { name: 'Permafrost', icon: '❄️', query: 'permafrost thawing methane release arctic' },
+    { name: 'Antarctica', icon: '🧊', query: 'antarctica melting ice shelf glacier collapse' }
   ];
 
-  const fetchNews = async () => {
+  const fetchNews = async (pageNumber: number) => {
     try {
-      const query = activeFilter === 'all' 
-        ? 'climate crisis OR environmental disaster OR water shortage'
-        : cropFilters.find(f => f.name.toLowerCase() === activeFilter)?.query || '';
+      setLoading(true);
+      const selectedIssue = environmentalIssues.find(issue => 
+        issue.name.toLowerCase() === activeFilter.toLowerCase()
+      );
+      
+      let query = activeFilter === 'all' 
+        ? 'environmental crisis OR climate change OR global warming'
+        : selectedIssue?.query || '';
+
+      // Add search query if it exists
+      if (searchQuery.trim()) {
+        query = `${query} AND ${searchQuery}`;
+      }
 
       const [newsApiResponse, gNewsResponse] = await Promise.allSettled([
         axios.get('https://newsapi.org/v2/everything', {
@@ -72,7 +108,8 @@ const Community: FC = () => {
             q: query,
             sortBy: 'publishedAt',
             language: 'en',
-            pageSize: 15,
+            pageSize: 10,
+            page: pageNumber,
             apiKey: NEWS_API_KEY
           }
         }),
@@ -80,7 +117,8 @@ const Community: FC = () => {
           params: {
             q: query,
             lang: 'en',
-            max: 15,
+            max: 10,
+            page: pageNumber,
             token: GNEWS_API_KEY
           }
         })
@@ -99,31 +137,108 @@ const Community: FC = () => {
         const processedNews = articles
           .filter(article => article.title && article.description)
           .map((article, index) => ({
-            id: article.url || `news-${index}`,
+            id: article.url || `news-${pageNumber}-${index}`,
             title: article.title,
             description: article.description,
             url: article.url,
-            image: article.image || article.urlToImage || `https://picsum.photos/seed/${index}/400/300`,
+            image: article.image || article.urlToImage || `https://picsum.photos/seed/${pageNumber}-${index}/400/300`,
             publishedAt: article.publishedAt,
             source: article.source
           }));
 
-        setNewsItems(processedNews);
+        setNewsItems(prev => pageNumber === 1 ? processedNews : [...prev, ...processedNews]);
+        setHasMore(articles.length >= 10);
         setRetryCount(0);
-      } else if (retryCount < 3) {
-        setRetryCount(prev => prev + 1);
-        setTimeout(fetchNews, 2000);
+      } else {
+        setHasMore(false);
+        if (retryCount < 3) {
+          setRetryCount(prev => prev + 1);
+          setTimeout(() => fetchNews(pageNumber), 2000);
+        }
       }
     } catch (err: unknown) {
       console.error('Failed to fetch news:', err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchNews();
-    const interval = setInterval(fetchNews, 300000);
-    return () => clearInterval(interval);
-  }, [activeFilter]);
+    setPage(1);
+    setNewsItems([]);
+    setHasMore(true);
+    fetchNews(1);
+  }, [activeFilter, searchQuery]);
+
+  useEffect(() => {
+    if (page > 1) {
+      fetchNews(page);
+    }
+  }, [page]);
+
+  // Handle click outside notification menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notifyMenuRef.current && !notifyMenuRef.current.contains(event.target as Node)) {
+        setShowNotifyMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Request notification permission
+  const requestNotificationPermission = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error requesting notification permission:', error);
+      return false;
+    }
+  };
+
+  // Toggle notifications
+  const toggleNotifications = async (enable: boolean) => {
+    if (enable) {
+      const granted = await requestNotificationPermission();
+      if (granted) {
+        setNotificationsEnabled(true);
+        showNotification('Notifications Enabled', 'You will now receive notifications for new environmental updates.');
+      }
+    } else {
+      setNotificationsEnabled(false);
+      showNotification('Notifications Disabled', 'You will no longer receive notifications.');
+    }
+    setShowNotifyMenu(false);
+  };
+
+  // Show notification
+  const showNotification = (title: string, body: string) => {
+    if (Notification.permission === 'granted') {
+      new Notification(title, {
+        body,
+        icon: '/favicon.ico', // Make sure to add your app icon
+        badge: '/favicon.ico',
+        tag: 'environmental-update'
+      });
+    }
+  };
+
+  // Notify about new posts
+  useEffect(() => {
+    if (notificationsEnabled && newsItems.length > 0) {
+      const latestPost = newsItems[0];
+      showNotification(
+        'New Environmental Update',
+        latestPost.title
+      );
+    }
+  }, [newsItems, notificationsEnabled]);
 
   const getTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
@@ -149,38 +264,75 @@ const Community: FC = () => {
             <input
               type="text"
               placeholder="Search environmental crisis news"
-              className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
-          <button className="p-2 rounded-full bg-red-50">
-            <BellIcon className="h-6 w-6 text-red-600" />
-          </button>
+          <div className="relative" ref={notifyMenuRef}>
+            <button 
+              onClick={() => setShowNotifyMenu(!showNotifyMenu)}
+              className={`p-2 rounded-full transition-colors ${
+                notificationsEnabled ? 'bg-green-50' : 'bg-gray-50 hover:bg-gray-100'
+              }`}
+            >
+              {notificationsEnabled ? (
+                <BellIcon className="h-6 w-6 text-green-600" />
+              ) : (
+                <BellSlashIcon className="h-6 w-6 text-gray-400" />
+              )}
+            </button>
+
+            {/* Notification Menu */}
+            {showNotifyMenu && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-100">
+                <button
+                  onClick={() => toggleNotifications(true)}
+                  className={`flex items-center px-4 py-2 text-sm w-full hover:bg-gray-50 ${
+                    notificationsEnabled ? 'text-green-600' : 'text-gray-700'
+                  }`}
+                >
+                  <BellIcon className="h-5 w-5 mr-2" />
+                  Notify All
+                </button>
+                <button
+                  onClick={() => toggleNotifications(false)}
+                  className={`flex items-center px-4 py-2 text-sm w-full hover:bg-gray-50 ${
+                    !notificationsEnabled ? 'text-red-600' : 'text-gray-700'
+                  }`}
+                >
+                  <BellSlashIcon className="h-5 w-5 mr-2" />
+                  Notify Off
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Filters */}
         <div className="mt-4">
           <div className="flex justify-between items-center mb-2">
-            <h2 className="text-lg font-medium">Critical Issues</h2>
+            <h2 className="text-lg font-medium">Environmental Issues</h2>
             <button 
               onClick={() => setActiveFilter('all')}
-              className="text-red-600 text-sm hover:text-red-700"
+              className="text-green-600 text-sm hover:text-green-700"
             >
               Show All
             </button>
           </div>
-          <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
-            {cropFilters.map((filter) => (
+          <div className="flex space-x-3 overflow-x-auto pb-2 scrollbar-hide">
+            {environmentalIssues.map((issue) => (
               <button
-                key={filter.name}
-                onClick={() => setActiveFilter(filter.name.toLowerCase())}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-full border whitespace-nowrap transition-colors
-                  ${activeFilter === filter.name.toLowerCase()
-                    ? 'bg-red-50 border-red-200 text-red-700'
+                key={issue.name}
+                onClick={() => setActiveFilter(issue.name.toLowerCase())}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-full border whitespace-nowrap transition-all
+                  ${activeFilter === issue.name.toLowerCase()
+                    ? 'bg-green-50 border-green-200 text-green-700'
                     : 'bg-white border-gray-200 hover:bg-gray-50'
                   }`}
               >
-                <span className="text-xl">{filter.icon}</span>
-                <span>{filter.name}</span>
+                <span className="text-xl">{issue.icon}</span>
+                <span className="text-sm font-medium">{issue.name}</span>
               </button>
             ))}
           </div>
@@ -190,8 +342,12 @@ const Community: FC = () => {
       {/* News Feed */}
       <div className="flex-1 overflow-y-auto p-4">
         <div className="space-y-4">
-          {newsItems.map((item) => (
-            <div key={item.id} className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow">
+          {newsItems.map((item, index) => (
+            <div 
+              key={item.id} 
+              ref={index === newsItems.length - 1 ? lastNewsElementRef : undefined}
+              className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow"
+            >
               <div className="flex items-center space-x-3 mb-3">
                 <div className="bg-red-100 rounded-full p-2">
                   <span className="text-red-600 text-sm font-medium">{item.source.name}</span>
@@ -238,6 +394,16 @@ const Community: FC = () => {
               </div>
             </div>
           ))}
+          {loading && (
+            <div className="flex justify-center py-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+            </div>
+          )}
+          {!hasMore && newsItems.length > 0 && (
+            <div className="text-center py-4 text-gray-500">
+              No more posts to load
+            </div>
+          )}
         </div>
       </div>
     </div>
